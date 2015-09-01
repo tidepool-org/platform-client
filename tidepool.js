@@ -18,6 +18,7 @@
 var superagent = require('superagent');
 var _ = require('lodash');
 
+var inMemStore = require('./lib/inMemoryStorage');
 var makeClient = require('./index');
 
 // Public-facing API, used by app developers
@@ -47,6 +48,9 @@ module.exports = function(options) {
       setItem: function() {},
       removeItem: function() {}
     };
+  }
+  if (localStore === 'memory') {
+    localStore = inMemStore();
   }
 
   return makeClient(_.omit(options, 'log', 'superagent', 'localStore'), {
