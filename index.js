@@ -569,6 +569,43 @@ module.exports = function (config, deps) {
         cb
       );
     },
+
+    /**
+     * Get all notes within a specified date range that match the regex pattern
+     *
+     * @param {String} userId of the user to get the notes for
+     * @param {Object} options
+     * @param {String} options.start [start=''] the start date is optional
+     * @param {String} options.end [end=''] the end date is optional
+     * @param {Regex} regex string to match
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+
+    getNotesForUserWithPattern: function (userId, options, regex, cb) {
+      common.assertArgumentsSize(arguments, 4);
+
+      options = options || {};
+      var start = options.start || '';
+      var end = options.end || '';
+
+      this.getNotesForUser(userId, options, function(err, response) {
+        if (err) {
+          cb(err);
+        } else {
+          var notes = response;
+          var filteredNotes = [];
+          for (var i=0; i < notes.length;i++) {
+            if (notes[i].messagetext.match(regex) != null) {
+              filteredNotes.push(notes[i]);
+            }
+          }
+          cb(null, notes);
+        }
+
+      }); 
+    },
+
     /**
      * Reply to a specfic message thread
      *
@@ -652,6 +689,21 @@ module.exports = function (config, deps) {
       common.doPutWithToken(
         '/message/edit/' + edits.id,
         {message: edits},
+        cb
+      );
+    },
+    /**
+     * Delete a specific message 
+     *
+     * @param {String} messageId
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+    deleteMessage: function (messageId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+      common.doDeleteWithToken(
+        '/message/remove/' + messageId,
+        { 200: function(res){ return res.body.messages; }, 404: [] },
         cb
       );
     },
