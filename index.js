@@ -600,7 +600,7 @@ module.exports = function (config, deps) {
               filteredNotes.push(notes[i]);
             }
           }
-          cb(null, notes);
+          cb(null, filteredNotes);
         }
 
       }); 
