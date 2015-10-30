@@ -355,6 +355,13 @@ module.exports = function (config, deps) {
           if (err != null) {
             return cb(err);
           }
+          else if (res.error != null) {
+            // reshape client error response in the way the uploader currently expects
+            // for the minimum version check (may apply elsewhere too)
+            var clientError = {message: JSON.parse(res.text)};
+            clientError.message.reason = clientError.message.text;
+            return cb(_.omit(clientError, 'text'));
+          }
           return cb(null,res.body);
         });
     },
