@@ -331,6 +331,33 @@ module.exports = function (config, deps) {
         cb
       );
     },
+
+    /**
+     * Get raw device data for the user filtered by a set of criteria
+     *
+     * @param {String} userId of the user to get the device data for
+     * @param {Object} filteringParams is a set of parameters to filter records by. Is object with the follow fields:
+     *  {
+     *     startdate: if set, returns only records after this timestamp. Is ISO formated date/time string 
+     *     enddate: if set, returns only records before this timestamp. Is ISO formated date/time string
+     *     type: if set, returns only records that match list of types. Can be comma seperated list of multiple types
+     *     subtype: if set, returns only records that match list of subtypes. Can be comma seperated list of multiple subtypes
+     *  }
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+    getFilteredDeviceData: function(userId, filteringParams, cb) {
+      common.assertArgumentsSize(arguments, 3);
+      var url = '/data/'+userId+'?';
+      for (var key in filteringParams) {
+        url = url +key+'='+filteringParams[key]+'&'
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
     /**
      * Upload device data for the given user
      *
