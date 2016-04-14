@@ -69,8 +69,10 @@ module.exports = function (config, deps) {
     * @returns {String} url for uploads
     */
     getUploadUrl: common.getUploadUrl,
+    getDataServicesUrl: common.getDataServicesUrl,
     setApiHost: common.setApiHost,
     setUploadHost: common.setUploadHost,
+    setDataServicesHost: common.setDataServicesHost,
     setBlipHost: common.setBlipHost,
     makeBlipUrl: common.makeBlipUrl,
     /**
@@ -367,6 +369,38 @@ module.exports = function (config, deps) {
 
        superagent
         .post(common.makeUploadUrl('/data/'+userId))
+        .send(data)
+        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .end(
+        function (err, res) {
+
+          if (err != null) {
+            return cb(err);
+          } else if (res.status !== 200) {
+            return cb(res.body);
+          }
+
+          return cb(null,res.body);
+
+        });
+    },
+    /**
+     * Upload device data to Data Services API for the given user
+     *
+     * @param {String} userId of the user to get the device data for
+     * @param {Object} data to be uploaded
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+    uploadDataServicesDataForUser: function (userId, data, cb) {
+      common.assertArgumentsSize(arguments, 3);
+
+      if (_.isEmpty(common.getDataServicesUrl())) {
+        return cb({ status : common.STATUS_BAD_REQUEST, message: 'The dataservices api needs to be configured' });
+      }
+
+       superagent
+        .post(common.makeDataServicesUrl('/dataset/'+userId))
         .send(data)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .end(
