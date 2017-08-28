@@ -1,6 +1,6 @@
 {
   "name": "tidepool-platform-client",
-  "version": "v0.4.0-alpha.1",
+  "version": "v0.4.0-alpha.2",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
   "scripts": {

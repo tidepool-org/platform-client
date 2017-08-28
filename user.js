@@ -481,7 +481,6 @@ module.exports = function (common, config, deps) {
     getUserToken : getUserToken,
     isLoggedIn: isLoggedIn,
     login : login,
-    oauthLogin : oauthLogin,
     logout : logout,
     signup : signup,
     initialize : initialize,
