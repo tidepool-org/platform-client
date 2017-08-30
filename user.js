@@ -39,9 +39,7 @@ module.exports = function (common, config, deps) {
 
   var myToken = null;
   var myUserId = null;
-  // This is a 'version' counter for the number of times we've logged in.
-  // It is used to invalidate stale attempts at refreshing a token
-  var loginVersion = 0;
+
   var TOKEN_LOCAL_KEY = 'authToken';
   var ACCESS_TOKEN_LOCAL_KEY = 'authAccessToken';
 
@@ -52,7 +50,6 @@ module.exports = function (common, config, deps) {
 
   //config
   config = _.clone(config);
-  defaultProperty(config, 'tokenRefreshInterval', 10 * 60 * 1000); // 10 minutes
 
   /**
    * Initialize client for user
@@ -67,21 +64,6 @@ module.exports = function (common, config, deps) {
     if (!myToken) {
       myToken = store.getItem(TOKEN_LOCAL_KEY);
       common.syncToken(myToken);
-      if (myToken != null) { 
-        refreshUserToken(myToken, function(err, data) {
-          var hasNewSession = data && data.userid && data.token;
-    
-          if (err || !hasNewSession) {
-            log.info('Local session invalid', err, data);
-            saveSession(null, null);
-            return cb();
-          }
-    
-          log.info('Loaded local session');
-          saveSession(data.userid, data.token, {remember:true});
-          cb(null, {userid: data.userid, token: data.token});
-        });
-      }
     }
     
     if (myToken == null) {
@@ -89,23 +71,6 @@ module.exports = function (common, config, deps) {
       return cb();
     }
     
-  }
-
-  function refreshUserToken(token, cb) {
-    superagent.get(common.makeAPIUrl('/auth/login'))
-      .set(common.SESSION_TOKEN_HEADER, token)
-      .end(
-      function (err, res) {
-        if (err) {
-          err.body = (err.response && err.response.body) || '';
-          return cb(err, null);
-        }
-        if (res.status !== 200) {
-          return common.handleHttpError(res, cb);
-        }
-
-        return cb(null, {userid: res.body.userid, token: res.headers[common.SESSION_TOKEN_HEADER]});
-      });
   }
   /**
    * Save user session (in-memory and stored in browser)
@@ -115,10 +80,6 @@ module.exports = function (common, config, deps) {
     myToken = newToken;
     common.syncToken(myToken);
     myUserId = newUserId;
-
-    // Store and increment the loginVersion.  This is a mechanism to nullify any refreshSession calls that
-    // are waiting for their timeout to run.
-    var currVersion = ++loginVersion;
 
     if (newToken == null) {
       store.removeItem(TOKEN_LOCAL_KEY);
@@ -132,26 +93,6 @@ module.exports = function (common, config, deps) {
       store.setItem(TOKEN_LOCAL_KEY, newToken);
       log.info('Saved session locally');
     }
-
-    var refreshSession = function() {
-      if (myToken == null || currVersion !== loginVersion) {
-        log.info('Stopping session token refresh for version', currVersion);
-        return;
-      }
-
-      log.info('Refreshing session token');
-      refreshUserToken(myToken, function(err, data) {
-        var hasNewSession = data && data.userid && data.token;
-        if (err || !hasNewSession) {
-          log.warn('Failed refreshing session token', err);
-          saveSession(null, null);
-        } else {
-          saveSession(data.userid, data.token, options);
-        }
-      });
-    };
-
-    setTimeout(refreshSession, config.tokenRefreshInterval);
   }
   /**
    * Save user session (in-memory and stored in browser)
@@ -161,10 +102,6 @@ module.exports = function (common, config, deps) {
     myToken = newToken;
     common.syncAccessToken(myToken);
     myUserId = newUserId;
-
-    // Store and increment the loginVersion.  This is a mechanism to nullify any refreshSession calls that
-    // are waiting for their timeout to run.
-    var currVersion = ++loginVersion;
 
     if (newToken == null) {
       store.removeItem(ACCESS_TOKEN_LOCAL_KEY);
@@ -264,17 +201,10 @@ module.exports = function (common, config, deps) {
       setTimeout(function(){ cb(null, {}); }, 0);
     }
 
-    var onSuccess=function(res){
-      saveSession(null, null);
-      return res.status;
-    };
+    saveAccessTokenSession(null, null);
+    saveSession(null, null);
 
-    common.doPostWithToken(
-      '/auth/logout',
-      {},
-      {200: onSuccess},
-      cb
-    );
+    return cb(null, {});
   }
   /**
    * Signup user to the Tidepool platform
