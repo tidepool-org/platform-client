@@ -444,7 +444,10 @@ module.exports = function (config, deps) {
 
       var url = '/data/' + userId;
       if (!_.isUndefined(options.carelink) && !_.isNull(options.carelink)) {
-        url += '?carelink=' + options.carelink;
+        url += (url.includes('?') ? '&' : '?') + 'carelink=' + options.carelink;
+      }
+      if (!_.isUndefined(options.dexcom) && !_.isNull(options.dexcom)) {
+        url += (url.includes('?') ? '&' : '?') + 'dexcom=' + options.dexcom;
       }
 
       common.doGetWithToken(
@@ -471,6 +474,22 @@ module.exports = function (config, deps) {
           }
           return cb(null,res.body);
         });
+    },
+    /**
+     * Get the data sources for a given user
+     *
+     * @param {String} userId of the user to get the data sources for
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+    getDataSourcesForUser: function(userId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+
+      common.doGetWithToken(
+        '/v1/users/' + userId + '/data_sources',
+        { 200: function(res) { return res.body; } },
+        cb
+      );
     },
     /**
      * Create a dataset for the given user
@@ -937,6 +956,9 @@ module.exports = function (config, deps) {
     updateCurrentUser: user.updateCurrentUser,
     updateCustodialUser: user.updateCustodialUser,
     saveAccessTokenSession: user.saveAccessTokenSession,
+    createRestrictedTokenForUser: user.createRestrictedTokenForUser,
+    createOAuthProviderAuthorization: user.createOAuthProviderAuthorization,
+    deleteOAuthProviderAuthorization: user.deleteOAuthProviderAuthorization,
     /**
      * Signup
      */
