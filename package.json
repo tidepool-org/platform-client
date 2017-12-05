@@ -1,6 +1,6 @@
 {
   "name": "tidepool-platform-client",
-  "version": "v0.4.0-alpha.5",
+  "version": "0.4.0-accept-access-tokens.0",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
   "scripts": {
