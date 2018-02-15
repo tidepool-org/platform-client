@@ -24,7 +24,7 @@ var storage = require('./../../lib/inMemoryStorage');
 var platform = require('../../index.js');
 var pjson = require('../../package.json');
 
-describe('platform client', function () {
+describe.skip('platform client', function () {
 
   /**
   * Timeout is used when running against the deployed services

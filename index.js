@@ -162,7 +162,7 @@ module.exports = function (config, deps) {
         function(token){
           superagent
             .get(common.makeAPIUrl('/metrics/thisuser/' + config.metricsSource + ' - ' + eventname))
-            .set(common.SESSION_TOKEN_HEADER, token)
+            .set(common.getHeader(), token)
             .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
             .query(properties)
             .end(doNothingCB);
@@ -205,7 +205,7 @@ module.exports = function (config, deps) {
         function(token){
           superagent
             .get(common.makeAPIUrl('/metrics/thisuser/' + config.metricsSource + ' - ' + eventname))
-            .set(common.SESSION_TOKEN_HEADER, token)
+            .set(common.getHeader(), token)
             .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
             .query(properties)
             .end(doNothingCB);
@@ -526,7 +526,7 @@ module.exports = function (config, deps) {
        superagent
         .post(common.makeDataUrl('/v1/users/' + userId + '/datasets'))
         .send(info)
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -565,7 +565,7 @@ module.exports = function (config, deps) {
        superagent
         .put(common.makeDataUrl('/v1/datasets/' + datasetId))
         .send({dataState: 'closed'})
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -600,7 +600,7 @@ module.exports = function (config, deps) {
        superagent
         .post(common.makeDataUrl('/v1/datasets/' + datasetId + '/data'))
         .send(data)
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -636,7 +636,7 @@ module.exports = function (config, deps) {
        superagent
         .post(common.makeUploadUrl('/data/'+userId))
         .send(data)
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -727,7 +727,7 @@ module.exports = function (config, deps) {
 
             superagent
               .get(common.makeUploadUrl('/v1/synctasks/' + syncTaskId))
-              .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+              .set(common.getHeader(), user.getUserToken())
               .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
               .end(
                 function (err, res) {
@@ -763,7 +763,7 @@ module.exports = function (config, deps) {
         .post(common.makeUploadUrl('/v1/device/upload/cl'))
         .send(formData)
         .type('form')
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -809,7 +809,7 @@ module.exports = function (config, deps) {
        //get the contents of the carelink csv file
        superagent
         .get(common.makeUploadUrl('/v1/device/data/' + dataId))
-        .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
+        .set(common.getHeader(), user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
         .end(
         function (err, res) {
@@ -995,16 +995,14 @@ module.exports = function (config, deps) {
      */
     acceptTerms: user.acceptTerms,
     createCustodialAccount: user.createCustodialAccount,
-    destroySession: user.destroySession,
     getCurrentUser: user.getCurrentUser,
     getUserId: user.getUserId,
     isLoggedIn: user.isLoggedIn,
-    login: user.login,
-    oauthLogin: user.oauthLogin,
     logout: user.logout,
     signup: user.signup,
     updateCurrentUser: user.updateCurrentUser,
     updateCustodialUser: user.updateCustodialUser,
+    saveAccessTokenSession: user.saveAccessTokenSession,
     createRestrictedTokenForUser: user.createRestrictedTokenForUser,
     createOAuthProviderAuthorization: user.createOAuthProviderAuthorization,
     deleteOAuthProviderAuthorization: user.deleteOAuthProviderAuthorization,

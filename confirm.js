@@ -155,7 +155,7 @@ module.exports = function (common, deps) {
 
       superagent
         .get(common.makeAPIUrl('/confirm/invitations/'+inviteeId))
-        .set(common.SESSION_TOKEN_HEADER, common.getToken())
+        .set(common.getHeader(), common.getHeaderToken())
         .end(
         function (err, res) {
           if (err != null) {

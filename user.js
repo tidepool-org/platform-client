@@ -39,10 +39,8 @@ module.exports = function (common, config, deps) {
 
   var myToken = null;
   var myUserId = null;
-  // This is a 'version' counter for the number of times we've logged in.
-  // It is used to invalidate stale attempts at refreshing a token
-  var loginVersion = 0;
-  var TOKEN_LOCAL_KEY = 'authToken';
+
+  var ACCESS_TOKEN_LOCAL_KEY = 'authAccessToken';
 
   /*jshint unused:false */
   var log = requireDep(deps,'log');
@@ -51,7 +49,6 @@ module.exports = function (common, config, deps) {
 
   //config
   config = _.clone(config);
-  defaultProperty(config, 'tokenRefreshInterval', 10 * 60 * 1000); // 10 minutes
 
   /**
    * Initialize client for user
@@ -60,96 +57,36 @@ module.exports = function (common, config, deps) {
    */
   function initialize(cb) {
 
-    myToken = store.getItem(TOKEN_LOCAL_KEY);
-    common.syncToken(myToken);
-
+    myToken = store.getItem(ACCESS_TOKEN_LOCAL_KEY);
+    common.syncAccessToken(myToken);
+    
     if (myToken == null) {
       log.info('No local session found');
       return cb();
     }
-
-    refreshUserToken(myToken, function(err, data) {
-      var hasNewSession = data && data.userid && data.token;
-
-      if (err || !hasNewSession) {
-        log.info('Local session invalid', err, data);
-        saveSession(null, null);
-        return cb();
-      }
-
-      log.info('Loaded local session');
-      saveSession(data.userid, data.token, {remember:true});
-      cb(null, {userid: data.userid, token: data.token});
-    });
-  }
-
-  function refreshUserToken(token, cb) {
-    superagent.get(common.makeAPIUrl('/auth/login'))
-      .set(common.SESSION_TOKEN_HEADER, token)
-      .end(
-      function (err, res) {
-        if (err) {
-          err.body = (err.response && err.response.body) || '';
-          return cb(err, null);
-        }
-        if (res.status !== 200) {
-          return common.handleHttpError(res, cb);
-        }
-
-        return cb(null, {userid: res.body.userid, token: res.headers[common.SESSION_TOKEN_HEADER]});
-      });
+    
   }
   /**
    * Save user session (in-memory and stored in browser)
    */
-  function saveSession(newUserId, newToken, options) {
+  function saveAccessTokenSession(newUserId, newToken, options) {
     options = options || {};
     myToken = newToken;
-    common.syncToken(myToken);
+    common.syncAccessToken(myToken);
     myUserId = newUserId;
 
-    // Store and increment the loginVersion.  This is a mechanism to nullify any refreshSession calls that
-    // are waiting for their timeout to run.
-    var currVersion = ++loginVersion;
-
     if (newToken == null) {
-      store.removeItem(TOKEN_LOCAL_KEY);
-      log.info('Destroyed local session');
+      store.removeItem(ACCESS_TOKEN_LOCAL_KEY);
+      log.info('Destroyed local access_token session');
       return;
     }
 
     log.info('Session saved');
 
     if (options.remember) {
-      store.setItem(TOKEN_LOCAL_KEY, newToken);
-      log.info('Saved session locally');
+      store.setItem(ACCESS_TOKEN_LOCAL_KEY, newToken);
+      log.info('Saved session access_token locally');
     }
-
-    var refreshSession = function() {
-      if (myToken == null || currVersion !== loginVersion) {
-        log.info('Stopping session token refresh for version', currVersion);
-        return;
-      }
-
-      log.info('Refreshing session token');
-      refreshUserToken(myToken, function(err, data) {
-        var hasNewSession = data && data.userid && data.token;
-        if (err || !hasNewSession) {
-          log.warn('Failed refreshing session token', err);
-          saveSession(null, null);
-        } else {
-          saveSession(data.userid, data.token, options);
-        }
-      });
-    };
-
-    setTimeout(refreshSession, config.tokenRefreshInterval);
-  }
-  /**
-   * Destroy user session (in-memory and stored in browser)
-   */
-  function destroySession() {
-    return saveSession(null, null);
   }
   /**
    * Tells if the current client is logged in
@@ -176,80 +113,6 @@ module.exports = function (common, config, deps) {
     return myToken;
   }
   /**
-   * Login user to the Tidepool platform using the provided oauth token
-   *
-   * @param provided oauth token
-   * @param cb
-   * @returns {cb}  cb(err, response)
-   */
-  function oauthLogin(oauthToken, cb) {
-
-    superagent
-      .post(common.makeAPIUrl('/auth/oauthlogin'))
-      .set('Authorization', 'bearer '+oauthToken)
-      .end(
-      function (err, res) {
-
-        if (err != null) {
-          err.body = (err.response && err.response.body) || '';
-          return cb(err, null);
-        }
-
-        if (res.status !== 200) {
-          return common.handleHttpError(res, cb);
-        }
-
-        var oauthUserId = res.body.oauthUser.userid;
-        var theToken = res.headers[common.SESSION_TOKEN_HEADER];
-        //save the session and remember by default
-        saveSession(oauthUserId, theToken, {remember:true});
-        return cb(null,{userid: oauthUserId, user: res.body.oauthUser, target: res.body.oauthTarget});
-      });
-  }
-  /**
-   * Login user to the Tidepool platform
-   *
-   * @param user object with a username and password to login
-   * @param options (optional) object with `remember` boolean attribute
-   * @param cb
-   * @returns {cb}  cb(err, response)
-   */
-  function login(user, options, cb) {
-    options = options || {};
-    if (typeof options === 'function') {
-      cb = options;
-      options = {};
-    }
-
-    if (user.username == null) {
-      return cb({ status : common.STATUS_BAD_REQUEST, message: 'Must specify a username' });
-    }
-    if (user.password == null) {
-      return cb({ status : common.STATUS_BAD_REQUEST, message: 'Must specify a password' });
-    }
-
-    superagent
-      .post(common.makeAPIUrl('/auth/login', user.longtermkey))
-      .auth(user.username, user.password)
-      .end(
-      function (err, res) {
-        if (err != null) {
-          err.body = (err.response && err.response.body) || '';
-          return cb(err, null);
-        }
-
-        if (res.status !== 200) {
-          return common.handleHttpError(res, cb);
-        }
-
-        var theUserId = res.body.userid;
-        var theToken = res.headers[common.SESSION_TOKEN_HEADER];
-
-        saveSession(theUserId, theToken, options);
-        return cb(null,{userid: theUserId, user: res.body});
-      });
-  }
-  /**
    * Logout user
    *
    * @returns {cb}  cb(err, response)
@@ -261,17 +124,9 @@ module.exports = function (common, config, deps) {
       setTimeout(function(){ cb(null, {}); }, 0);
     }
 
-    var onSuccess=function(res){
-      saveSession(null, null);
-      return res.status;
-    };
+    saveAccessTokenSession(null, null);
 
-    common.doPostWithToken(
-      '/auth/logout',
-      {},
-      {200: onSuccess},
-      cb
-    );
+    return cb(null, {});
   }
   /**
    * Signup user to the Tidepool platform
@@ -309,7 +164,7 @@ module.exports = function (common, config, deps) {
         var theUserId = res.body.userid;
         var theToken = res.headers[common.SESSION_TOKEN_HEADER];
 
-        saveSession(theUserId, theToken, options);
+        //TODO: need auth0 token
         return cb(null,res.body);
       });
   }
@@ -336,7 +191,7 @@ module.exports = function (common, config, deps) {
       }
       superagent
        .post(common.makeAPIUrl('/auth/user/' + getUserId() + '/user'))
-       .set(common.SESSION_TOKEN_HEADER, getUserToken())
+       .set(common.getHeader(), common.getHeaderToken())
        .send(body)
        .end(
        function (err, res) {
@@ -357,7 +212,7 @@ module.exports = function (common, config, deps) {
       superagent
         .put(common.makeAPIUrl('/metadata/'+ custodialUser.id + '/profile'))
         .send(profile)
-        .set(common.SESSION_TOKEN_HEADER, getUserToken())
+        .set(common.getHeader(), common.getHeaderToken())
         .end(
           function (err, res) {
             if (err != null) {
@@ -378,7 +233,7 @@ module.exports = function (common, config, deps) {
       }
       superagent
         .post(common.makeAPIUrl('/confirm/send/signup/'+custodialUser.id))
-        .set(common.SESSION_TOKEN_HEADER, getUserToken())
+        .set(common.getHeader(), common.getHeaderToken())
         .send({})
         .end(
           function (err, res) {
@@ -534,17 +389,15 @@ module.exports = function (common, config, deps) {
   return {
     acceptTerms : acceptTerms,
     createCustodialAccount : createCustodialAccount,
-    destroySession: destroySession,
     getCurrentUser : getCurrentUser,
     getUserId : getUserId,
     getUserToken : getUserToken,
     isLoggedIn: isLoggedIn,
-    login : login,
-    oauthLogin : oauthLogin,
     logout : logout,
     signup : signup,
     initialize : initialize,
     updateCurrentUser : updateCurrentUser,
+    saveAccessTokenSession: saveAccessTokenSession,
     updateCustodialUser: updateCustodialUser,
     createRestrictedTokenForUser: createRestrictedTokenForUser,
     createOAuthProviderAuthorization: createOAuthProviderAuthorization,
