@@ -165,6 +165,7 @@ module.exports = function (config, deps) {
             .set(common.SESSION_TOKEN_HEADER, token)
             .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
             .query(properties)
+            .retry()
             .end(doNothingCB);
         }
       );
@@ -208,6 +209,7 @@ module.exports = function (config, deps) {
             .set(common.SESSION_TOKEN_HEADER, token)
             .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
             .query(properties)
+            .retry()
             .end(doNothingCB);
         }
       );
@@ -475,6 +477,7 @@ module.exports = function (config, deps) {
       common.assertArgumentsSize(arguments, 1);
       superagent
         .get(common.makeUploadUrl('/info'))
+        .retry()
         .end(
         function (err, res) {
           if (err != null) {
@@ -492,6 +495,7 @@ module.exports = function (config, deps) {
     getTime: function (cb) {
       superagent
         .get(common.makeDataUrl('/v1/time'))
+        .retry()
         .end(
         function (err, res) {
           if (err != null) {
@@ -536,6 +540,7 @@ module.exports = function (config, deps) {
         .send(info)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
           if (err != null) {
@@ -575,6 +580,7 @@ module.exports = function (config, deps) {
         .send({dataState: 'closed'})
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
 
@@ -610,6 +616,7 @@ module.exports = function (config, deps) {
         .send(data)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
 
@@ -646,6 +653,7 @@ module.exports = function (config, deps) {
         .send(data)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
 
@@ -685,6 +693,7 @@ module.exports = function (config, deps) {
       .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
       .set(common.DIGEST_HEADER, digest)
       .type(contentType)
+      .retry()
       .end(
       function (err, res) {
        if (err != null) {
@@ -776,6 +785,7 @@ module.exports = function (config, deps) {
               .get(common.makeUploadUrl('/v1/synctasks/' + syncTaskId))
               .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
               .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+              .retry()
               .end(
                 function (err, res) {
                   if (!_.isEmpty(err)) {
@@ -812,6 +822,7 @@ module.exports = function (config, deps) {
         .type('form')
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
           if (!_.isEmpty(err)) {
@@ -858,6 +869,7 @@ module.exports = function (config, deps) {
         .get(common.makeUploadUrl('/v1/device/data/' + dataId))
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
         function (err, res) {
           if (err) {
@@ -892,6 +904,7 @@ module.exports = function (config, deps) {
         .get(common.makeDataUrl('/v1/users/' + userId + '/data_sets?deviceId=' + deviceId + '&size=' + size))
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .retry()
         .end(
           function (err, res) {
             if (err) {

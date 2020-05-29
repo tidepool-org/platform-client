@@ -86,6 +86,7 @@ module.exports = function (common, config, deps) {
   function refreshUserToken(token, cb) {
     superagent.get(common.makeAPIUrl('/auth/login'))
       .set(common.SESSION_TOKEN_HEADER, token)
+      .retry()
       .end(
       function (err, res) {
         if (err) {
@@ -187,6 +188,7 @@ module.exports = function (common, config, deps) {
     superagent
       .post(common.makeAPIUrl('/auth/oauthlogin'))
       .set('Authorization', 'bearer '+oauthToken)
+      .retry()
       .end(
       function (err, res) {
 
@@ -231,6 +233,7 @@ module.exports = function (common, config, deps) {
     superagent
       .post(common.makeAPIUrl('/auth/login', user.longtermkey))
       .auth(user.username, user.password)
+      .retry()
       .end(
       function (err, res) {
         if (err != null) {
@@ -300,6 +303,7 @@ module.exports = function (common, config, deps) {
     superagent
       .post(common.makeAPIUrl('/auth/user'))
       .send(newUser)
+      .retry()
       .end(
       function (err, res) {
         if (err != null) {
@@ -338,6 +342,7 @@ module.exports = function (common, config, deps) {
        .post(common.makeAPIUrl('/auth/user/' + getUserId() + '/user'))
        .set(common.SESSION_TOKEN_HEADER, getUserToken())
        .send(body)
+       .retry()
        .end(
        function (err, res) {
         if (err != null) {
@@ -358,6 +363,7 @@ module.exports = function (common, config, deps) {
         .put(common.makeAPIUrl('/metadata/'+ custodialUser.id + '/profile'))
         .send(profile)
         .set(common.SESSION_TOKEN_HEADER, getUserToken())
+        .retry()
         .end(
           function (err, res) {
             if (err != null) {
@@ -380,6 +386,7 @@ module.exports = function (common, config, deps) {
         .post(common.makeAPIUrl('/confirm/send/signup/'+custodialUser.id))
         .set(common.SESSION_TOKEN_HEADER, getUserToken())
         .send({})
+        .retry()
         .end(
           function (err, res) {
             if (err != null) {
@@ -517,6 +524,7 @@ module.exports = function (common, config, deps) {
     superagent
       .del(common.makeAPIUrl('/v1/oauth/' + provider + '/authorize'))
       .set(common.SESSION_TOKEN_HEADER, getUserToken())
+      .retry()
       .end(
       function(err, res) {
         if (err != null) {
