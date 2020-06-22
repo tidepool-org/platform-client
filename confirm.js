@@ -51,6 +51,7 @@ module.exports = function (common, deps) {
       common.assertArgumentsSize(arguments, 2);
       superagent
        .put(common.makeAPIUrl('/confirm/accept/signup/'+signupId))
+       .retry()
        .end(function (err, res) {
         if (err != null) {
           // TODO: update version of lodash so we can use _.get
@@ -77,6 +78,7 @@ module.exports = function (common, deps) {
       superagent
        .put(common.makeAPIUrl('/confirm/accept/signup/'+signupId))
        .send({birthday: birthday, password: password})
+       .retry()
        .end(function (err, res) {
         if (err != null) {
           err.error = (err.response && err.response.body && err.response.body.error) || '';
@@ -100,6 +102,7 @@ module.exports = function (common, deps) {
       common.assertArgumentsSize(arguments, 2);
       superagent
        .post(common.makeAPIUrl('/confirm/resend/signup/' + email))
+       .retry()
        .end(function (err, res) {
         if (err != null) {
           err.message = (err.response && err.response.error) || '';
@@ -156,6 +159,7 @@ module.exports = function (common, deps) {
       superagent
         .get(common.makeAPIUrl('/confirm/invitations/'+inviteeId))
         .set(common.SESSION_TOKEN_HEADER, common.getToken())
+        .retry()
         .end(
         function (err, res) {
           if (err != null) {
@@ -259,6 +263,7 @@ module.exports = function (common, deps) {
 
       superagent
        .post(common.makeAPIUrl('/confirm/send/forgot/' + email))
+       .retry()
        .end(function (err, res) {
         if (err != null) {
           err.message = (err.response && err.response.error) || '';
@@ -287,6 +292,7 @@ module.exports = function (common, deps) {
       superagent
        .put(common.makeAPIUrl('/confirm/accept/forgot'))
        .send(payload)
+       .retry()
        .end(function (err, res) {
         if (err != null) {
           err.message = (err.response && err.response.error) || '';
