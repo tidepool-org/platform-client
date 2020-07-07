@@ -1117,7 +1117,9 @@ module.exports = function (config, deps) {
     /**
      * Prescriptions
      */
-    getPrescriptions: prescription.getPrescriptions,
     createPrescription: prescription.createPrescription,
+    createPrescriptionRevision: prescription.createPrescriptionRevision,
+    deletePrescription: prescription.deletePrescription,
+    getPrescriptions: prescription.getPrescriptions,
   };
 };
