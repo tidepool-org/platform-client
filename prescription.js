@@ -9,7 +9,7 @@ module.exports = function (common) {
      *
      * @param {Object} prescription - prescription to create
      * @param cb
-     * @returns {cb}  cb(err, response)
+     * @returns {cb} cb(err, response)
      */
     createPrescription: function (prescription, cb) {
       common.assertArgumentsSize(arguments, 2);
@@ -27,7 +27,7 @@ module.exports = function (common) {
      * @param {Object} revision - prescription revision to create
      * @param {String} prescriptionId - prescription id to attach revision to
      * @param cb
-     * @returns {cb}  cb(err, response)
+     * @returns {cb} cb(err, response)
      */
     createPrescriptionRevision: function (revision, prescriptionId, cb) {
       common.assertArgumentsSize(arguments, 3);
@@ -44,7 +44,7 @@ module.exports = function (common) {
      *
      * @param {String} prescriptionId - id of prescription to delete
      * @param cb
-     * @returns {cb}  cb(err, response)
+     * @returns {cb} cb(err, response)
      */
     deletePrescription: function (prescriptionId, cb) {
       common.assertArgumentsSize(arguments, 2);
@@ -58,7 +58,7 @@ module.exports = function (common) {
      * Get all prescriptions
      *
      * @param cb
-     * @returns {cb}  cb(err, response)
+     * @returns {cb} cb(err, response)
      */
     getPrescriptions: function (cb) {
       common.assertArgumentsSize(arguments, 1);
