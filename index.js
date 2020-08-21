@@ -48,6 +48,7 @@ module.exports = function (config, deps) {
   var confirm = require('./confirm.js')( common, {superagent:superagent, findProfile: findProfile});
   var user = require('./user.js')( common, config, deps);
   var prescription = require('./prescription.js')( common, {superagent:superagent});
+  var devices = require('./devices.js')( common, {superagent:superagent});
 
   /**
    * Add a new or update an existing metadata for a user
@@ -1121,5 +1122,10 @@ module.exports = function (config, deps) {
     createPrescriptionRevision: prescription.createPrescriptionRevision,
     deletePrescription: prescription.deletePrescription,
     getPrescriptions: prescription.getPrescriptions,
+    /**
+     * Devices
+     */
+    getCGMDevices: devices.getCGMDevices,
+    getPumpDevices: devices.getPumpDevices,
   };
 };
