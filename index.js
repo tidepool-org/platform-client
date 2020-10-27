@@ -17,6 +17,7 @@
 
 var _ = require('lodash');
 var uuidv4 = require('uuid/v4');
+var logNetworkTime = require('superagent-node-http-timings');
 
 var id = require('./lib/id.js');
 
@@ -618,6 +619,15 @@ module.exports = function (config, deps) {
         .send(data)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .on('progress', event => {
+          console.log('Progress:', event);
+        })
+        .use(logNetworkTime((err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          console.log(result);
+        }))
         .retry()
         .end(
         function (err, res) {
@@ -655,6 +665,15 @@ module.exports = function (config, deps) {
         .send(data)
         .set(common.SESSION_TOKEN_HEADER, user.getUserToken())
         .set(common.TRACE_SESSION_HEADER, common.getSessionTrace())
+        .on('progress', event => {
+          console.log('Progress:', event);
+        })
+        .use(logNetworkTime((err, result) => {
+          if (err) {
+            return console.error(err);
+          }
+          console.log(result);
+        }))
         .retry()
         .end(
         function (err, res) {
