@@ -49,6 +49,7 @@ module.exports = function (config, deps) {
   var user = require('./user.js')( common, config, deps);
   var prescription = require('./prescription.js')( common, {superagent:superagent});
   var devices = require('./devices.js')( common, {superagent:superagent});
+  var clinics = require('./clinics.js')( common, {superagent:superagent});
 
   /**
    * Add a new or update an existing metadata for a user
@@ -1127,5 +1128,27 @@ module.exports = function (config, deps) {
      */
     getCGMDevices: devices.getCGMDevices,
     getPumpDevices: devices.getPumpDevices,
+    /**
+     * Clinics
+     */
+    getClinics: clinics.getClinics,
+    createClinic: clinics.createClinic,
+    getClinic: clinics.getClinic,
+    updateClinic: clinics.updateClinic,
+    deleteClinic: clinics.deleteClinic,
+    getClinician: clinics.getClinician,
+    updateClinician: clinics.updateClinician,
+    deleteClinicianFromClinic: clinics.deleteClinicianFromClinic,
+    getPatientsForClinic: clinics.getPatientsForClinic,
+    addPatientToClinic: clinics.addPatientToClinic,
+    getPatientFromClinic: clinics.getPatientFromClinic,
+    updateClinicPatient: clinics.updateClinicPatient,
+    deletePatientFromClinic: clinics.deletePatientFromClinic,
+    getCliniciansFromClinic: clinics.getCliniciansFromClinic,
+    addClinicianToClinic: clinics.addClinicianToClinic,
+    getClinicsPatient: clinics.getClinicsPatient,
+    deleteClinicsPatient: clinics.deleteClinicsPatient,
+    getClinicsClinician: clinics.getClinicsClinician,
+    deleteClinicsClinician: clinics.deleteClinicsClinician,
   };
 };
