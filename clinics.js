@@ -359,7 +359,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
-        '',
+        null,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -438,7 +438,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doPutWithToken(
         `/v1/clinicians/${userId}/invites/${inviteId}`,
-        '',
+        null,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
