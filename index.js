@@ -1140,6 +1140,7 @@ module.exports = function (config, deps) {
     updateClinician: clinics.updateClinician,
     deleteClinicianFromClinic: clinics.deleteClinicianFromClinic,
     getPatientsForClinic: clinics.getPatientsForClinic,
+    getPatientSummaryStatsForClinic: clinics.getPatientSummaryStatsForClinic,
     addPatientToClinic: clinics.addPatientToClinic,
     getPatientFromClinic: clinics.getPatientFromClinic,
     updateClinicPatient: clinics.updateClinicPatient,

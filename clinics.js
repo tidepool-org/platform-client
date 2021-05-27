@@ -182,6 +182,24 @@ module.exports = function (common) {
     },
 
     /**
+     * Get list of patients summary stats for a clinic
+     *
+     * @param {Number} clinicId - Id of the clinic
+     * @param {Object} summaryRequest
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getPatientSummaryStatsForClinic: function(clinicId, summaryRequest, cb){
+      common.assertArgumentsSize(2);
+      common.doPostWithToken(
+        `/v1/users/${clinicId}/summaries`,
+        summaryRequest,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
+
+    /**
      * Add patient to clinic
      *
      * @param {Number} clinicId - Id of the clinic
