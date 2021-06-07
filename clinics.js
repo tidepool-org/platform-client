@@ -484,5 +484,25 @@ module.exports = function (common) {
         cb
       );
     },
+
+    /**
+     * Invite a clinic
+     *
+     * @param {String} shareCode - share code of the clinic to invite
+     * @param {Object} permissions - permissions to be given
+     * @param {String} patientId - id of the patient that sent the invite
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+     inviteClinic: function (shareCode, permissions, patientId, cb) {
+      common.assertArgumentsSize(arguments, 4);
+      var details = { shareCode, permissions };
+
+      common.doPostWithToken(
+        '/confirm/send/invite/'+patientId+'/clinic',
+        details,
+        cb
+      );
+    },
   };
 };
