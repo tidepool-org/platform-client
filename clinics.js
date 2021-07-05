@@ -73,6 +73,22 @@ module.exports = function (common) {
     },
 
     /**
+     * Retrieve a clinic by share code
+     *
+     * @param {String} shareCode - Share code of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicByShareCode: function(shareCode, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/share_code/${shareCode}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Update a clinic
      *
      * @param {String} clinicId - Id of the clinic

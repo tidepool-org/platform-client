@@ -1134,6 +1134,7 @@ module.exports = function (config, deps) {
     getClinics: clinics.getClinics,
     createClinic: clinics.createClinic,
     getClinic: clinics.getClinic,
+    getClinicByShareCode: clinics.getClinicByShareCode,
     updateClinic: clinics.updateClinic,
     getCliniciansFromClinic: clinics.getCliniciansFromClinic,
     getClinician: clinics.getClinician,
