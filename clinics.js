@@ -206,6 +206,23 @@ module.exports = function (common) {
     },
 
     /**
+     * Remove association of clinic to patient
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - Id of the patient
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+     deletePatientFromClinic: function(clinicId, patientId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Get list of patients associated with clinic
      *
      * @param {String} clinicId - Id of the clinic
