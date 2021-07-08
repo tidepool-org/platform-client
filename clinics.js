@@ -201,7 +201,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 204: null, 404: [] },
         cb
       );
     },
