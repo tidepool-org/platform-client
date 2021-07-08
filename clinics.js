@@ -7,18 +7,16 @@ module.exports = function (common) {
     /**
      * Retrieve list of clinics.  Requires admin app authorization
      *
-     * @param {Object} options
-     * @param {String} [options.clinicianId] - Clinician ID
-     * @param {String} [options.patientId] - Patient ID
+     * @param {Object} [options]
      * @param {Number} [options.limit] - Query result limit
      * @param {Number} [options.offset] - Query offset
-     * @param {String} [options.sortOrder] - Query sort order
+     * @param {String} [options.email] - Email address
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     getClinics: function(options = {}, cb){
       common.assertArgumentsSize(2);
-      var url = '/clinics';
+      var url = '/v1/clinics';
       if(!_.isEmpty(options)){
         url += '?' + common.serialize(options);
       }
@@ -35,19 +33,23 @@ module.exports = function (common) {
      * @param {Object} clinic - New clinic
      * @param {String} [clinic.name] - Clinic name
      * @param {String} [clinic.address] - Clinic address
+     * @param {String} [clinic.city] - Clinic city
+     * @param {String} [clinic.postalCode] - Clinic zip/postal code
+     * @param {String} [clinic.state] - Clinic state
+     * @param {String} [clinic.country] - Clinic country
      * @param {Object[]} [clinic.phoneNumbers] - Array of phone number objects for the clinic
      * @param {String} [clinic.phoneNumbers[].type] - Phone number description
      * @param {String} [clinic.phoneNumbers[].number] - Phone number
-     * @param {String} [clinic.location] - Location
-     * @param {Object} [clinic.metadata]
-     *
+     * @param {String} [clinic.clinicType] - Type of clinic
+     * @param {Number} [clinic.clinicSize] - Patient population size
+     * @param {String} clinic.email - Primary email address for clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     createClinic: function(clinic, cb){
       common.assertArgumentsSize(2);
       common.doPostWithToken(
-        '/clinics',
+        '/v1/clinics',
         clinic,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
@@ -57,14 +59,14 @@ module.exports = function (common) {
     /**
      * Retrieve a clinic
      *
-     * @param {Number} clinicId - Id of the clinic
+     * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     getClinic: function(clinicId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
-        `/clinics/${clinicId}`,
+        `/v1/clinics/${clinicId}`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -73,39 +75,57 @@ module.exports = function (common) {
     /**
      * Update a clinic
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Object} updates
-     * @param {String} [updates.name] - Clinic name
-     * @param {String} [updates.address] - Clinic address
-     * @param {Object[]} [updates.phoneNumbers] - Array of phone number objects for the clinic
-     * @param {String} [updates.phoneNumbers[].type] - Phone number description
-     * @param {String} [updates.phoneNumbers[].number] - Phone number
-     * @param {String} [updates.location] - Location
-     * @param {Object} [updates.metadata]
+     * @param {String} clinicId - Id of the clinic
+     * @param {Object} clinic
+     * @param {String} clinic.id - Clinic ID
+     * @param {String} [clinic.name] - Clinic name
+     * @param {String} [clinic.address] - Clinic address
+     * @param {String} [clinic.city] - Clinic city
+     * @param {String} [clinic.postalCode] - Clinic zip/postal code
+     * @param {String} [clinic.state] - Clinic state
+     * @param {String} [clinic.country] - Clinic country
+     * @param {Object[]} [clinic.phoneNumbers] - Array of phone number objects for the clinic
+     * @param {String} [clinic.phoneNumbers[].type] - Phone number description
+     * @param {String} [clinic.phoneNumbers[].number] - Phone number
+     * @param {String} [clinic.clinicType] - Type of clinic
+     * @param {Number} [clinic.clinicSize] - Patient population size
+     * @param {String} clinic.email - Primary email address for clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    updateClinic: function(clinicId, updates, cb){
+    updateClinic: function(clinicId, clinic, cb){
       common.assertArgumentsSize(3);
-      common.doPatchWithToken(
-        `/clinics/${clinicId}`,
-        updates,
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}`,
+        clinic,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
     },
 
     /**
-     * Delete a clinic
+     * Retrieve a list of clinicians for a clinic
      *
-     * @param {Number} clinicId - Id of the clinic
+     * @param {String} clinicId - Id of the clinic
+     * @param {Object} [options] - Search options
+     * @param {String} [options.search] - Query
+     * @param {Number} [options.offset] - Page offset
+     * @param {Number} [options.limit] - Results per page
+     * @param {String} [options.email] - Email to search
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    deleteClinic: function(clinicId, cb){
-      common.assertArgumentsSize(2);
-      common.doDeleteWithToken(
-        `/clinics/${clinicId}`,
+     getCliniciansFromClinic: function(clinicId, options = {}, cb){
+      var url = `/v1/clinics/${clinicId}/clinicians`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -114,15 +134,15 @@ module.exports = function (common) {
     /**
      * Get a clinician for a clinic
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} clinicianId - Id of the clinician
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} clinicianId - Id of the clinician
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     getClinician: function(clinicId, clinicianId, cb){
       common.assertArgumentsSize(3);
       common.doGetWithToken(
-        `/clinics/${clinicId}/clinicians/${clinicianId}`,
+        `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -131,18 +151,22 @@ module.exports = function (common) {
     /**
      * Update a clinician
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} clinicianId - Id of the clinician
-     * @param {Object} updates
-     * @param {String[]} updates.permissions - Array of string permissions
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} clinicianId - Id of the clinician
+     * @param {Object} clinician
+     * @param {String} clinician.id - String representation of a Tidepool User ID
+     * @param {String} [clinician.inviteId] - The id of the invite if it hasn't been accepted
+     * @param {String} clinician.email - The email of the clinician
+     * @param {String} clinician.name - The name of the clinician
+     * @param {String[]} clinician.roles - Array of string roles
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    updateClinician: function(clinicId, clinicianId, updates, cb){
+    updateClinician: function(clinicId, clinicianId, clinician, cb){
       common.assertArgumentsSize(4);
-      common.doPatchWithToken(
-        `/clinics/${clinicId}/clinicians/${clinicianId}`,
-        updates,
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
+        clinician,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -151,15 +175,15 @@ module.exports = function (common) {
     /**
      * Remove association of clinic to clinician
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} clinicianId - Id of the clinician
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} clinicianId - Id of the clinician
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     deleteClinicianFromClinic: function(clinicId, clinicianId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
-        `/clinics/${clinicId}/clinicians/${clinicianId}`,
+        `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -168,35 +192,46 @@ module.exports = function (common) {
     /**
      * Get list of patients associated with clinic
      *
-     * @param {Number} clinicId - Id of the clinic
+     * @param {String} clinicId - Id of the clinic
+     * @param {Object} [options] - search options
+     * @param {String} [options.search] - search query string
+     * @param {Number} [options.offset] - search page offset
+     * @param {Number} [options.limit] - results per page
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    getPatientsForClinic: function(clinicId, cb){
-      common.assertArgumentsSize(2);
+    getPatientsForClinic: function(clinicId, options = {}, cb){
+      var url = `/v1/clinics/${clinicId}/patients`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
       common.doGetWithToken(
-        `/clinics/${clinicId}/patients`,
+        url,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       )
     },
 
     /**
-     * Add patient to clinic
+     * Create a new custodial patient account
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Object} patient
-     * @param {String} [patient.id] - Id of this relationship
-     * @param {String} [patient.patientId] - Id of the patient
-     * @param {String} [patient.clinicId] - Id of clinic
-     * @param {String[]} [patient.permissions] - Array of string permissions
+     * @param {String} clinicId - ID of the clinic
+     * @param {Object} patient - new patient
+     * @param {String} patient.email - The email address of the patient
+     * @param {String} patient.fullName - The full name of the patient
+     * @param {String} patient.birthDate - YYYY-MM-DD
+     * @param {String} [patient.mrn] - The medical record number of the patient
+     * @param {String[]} [patient.targetDevices] - Array of string target devices
      * @param {Function} cb
-     * @returns {cb} cb(err, response)
      */
-    addPatientToClinic: function(clinicId, patient, cb){
+    createCustodialAccount: function (clinicId, patient, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
-        `/clinics/${clinicId}/patients`,
+        `/v1/clinics/${clinicId}/patients`,
         patient,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
@@ -206,15 +241,15 @@ module.exports = function (common) {
     /**
      * Get a patient from clinic
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} patientId - Id of the patient
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - Id of the patient
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
     getPatientFromClinic: function(clinicId, patientId, cb){
       common.assertArgumentsSize(3);
       common.doGetWithToken(
-        `/clinics/${clinicId}/patients/${patientId}`,
+        `/v1/clinics/${clinicId}/patients/${patientId}`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
@@ -223,136 +258,228 @@ module.exports = function (common) {
     /**
      * Modify a patient from clinic
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} patientId - Id of the patient
-     * @param {Object} updates
-     * @param {String[]} updates.permissions - Array of string permissions
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - Id of the patient
+     * @param {Object} patient - new patient
+     * @param {String} patient.email - The email address of the patient
+     * @param {String} patient.fullName - The full name of the patient
+     * @param {String} patient.birthDate - YYYY-MM-DD
+     * @param {String} [patient.mrn] - The medical record number of the patient
+     * @param {String[]} [patient.targetDevices] - Array of string target devices
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    updateClinicPatient: function(clinicId, patientId, updates, cb){
+    updateClinicPatient: function(clinicId, patientId, patient, cb){
       common.assertArgumentsSize(4);
-      common.doPatchWithToken(
-        `/clinics/${clinicId}/patients/${patientId}`,
-        updates,
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}`,
+        patient,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
     },
 
     /**
-     * Remove association of clinic to patient
+     * Send an invite to a clinician to join a clinic
      *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Number} patientId - Id of the patient
+     * @param {String} clinicId - clinic ID
+     * @param {Object} clinician - clinician Invite object
+     * @param {String} clinician.email - clinician's email address
+     * @param {String[]} clinician.roles - array of clinician's roles
      * @param {Function} cb
-     * @returns {cb} cb(err, response)
      */
-    deletePatientFromClinic: function(clinicId, patientId, cb){
-      common.assertArgumentsSize(3);
-      common.doDeleteWithToken(
-        `/clinics/${clinicId}/patients/${patientId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
-        cb
-      );
-    },
-
-    /**
-     * Retrieve a list of clinicians for a clinic
-     *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Function} cb
-     * @returns {cb} cb(err, response)
-     */
-    getCliniciansFromClinic: function(clinicId, cb){
-      common.assertArgumentsSize(2);
-      common.doGetWithToken(
-        `/clinics/${clinicId}/clinicians`,
-        { 200: function(res){ return res.body; }, 404: [] },
-        cb
-      );
-    },
-
-    /**
-     * Add a clinician to a clinic
-     *
-     * @param {Number} clinicId - Id of the clinic
-     * @param {Object} clinician
-     * @param {String} [clinician.clinicianId] - Id of the clinician
-     * @param {String} [clinician.clinicId] - Id of the clinic
-     * @param {String[]} [clinician.permissions] - Array of string permissions
-     * @param {Function} cb
-     * @returns {cb} cb(err, response)
-     */
-    addClinicianToClinic: function(clinicId, clinician, cb){
+    inviteClinician: function(clinicId, clinician, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
-        `/clinics/${clinicId}/clinicians`,
+        `/v1/clinics/${clinicId}/invites/clinicians`,
         clinician,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
-      );
+      )
     },
 
     /**
-     * Retrieves information on patients in any of the clinics
+     * Resend the clinician invite
      *
-     * @param {Number} patientId - Id of the patient
+     * @param {String} clinicId - clinic Id
+     * @param {String} inviteId - invite Id
+     * @param {Function} cb
+     */
+    resendClinicianInvite: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doPatchWithToken(
+        `/v1/clinics/${clinicId}/invites/clinicians/${inviteId}`,
+        '',
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
+
+    /**
+     * Delete the outgoing clinician invite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} inviteId - invite Id
+     * @param {Function} cb
+     */
+    deleteClinicianInvite: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/invites/clinicians/${inviteId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
+
+    /**
+     * Retrieve list of patient invitations for clinic
+     *
+     * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    getClinicsPatient: function(patientId, cb){
+    getPatientInvites: function(clinicId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
-        `/clinics/patients/${patientId}`,
+        `/v1/clinics/${clinicId}/invites/patients`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
     },
 
     /**
-     * Delete patient from all clinics
+     * Accept a pending invite from patient user
      *
-     * @param {Number} patientId - Id of the patient
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    deleteClinicsPatient: function(patientId, cb){
-      common.assertArgumentsSize(2);
-      common.doDeleteWithToken(
-        `/clinics/patients/${patientId}`,
+    acceptPatientInvitation: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
+        null,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
     },
 
     /**
-     * Gets Clinicians from all clinics
+     * Update permissions that a clinic has for patient
      *
-     * @param {Number} clinicianId - Id of the clinician
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - Id of the patient
+     * @param {Object} permissions - New permissions
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    getClinicsClinician: function(clinicianId, cb){
+    updatePatientPermissions: function(clinicId, patientId, permissions, cb){
+      common.assertArgumentsSize(4);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}/permissions`,
+        permissions,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
+     * Get list of clinics associated with patient
+     *
+     * @param {String} userId - Patient user id
+     * @param {Object} [options] - search options
+     * @param {Number} [options.offset] - search page offset
+     * @param {Number} [options.limit] - results per page
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicsForPatient: function(userId, options = {}, cb){
+      var url = `/v1/patients/${userId}/clinics`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
+
+    /**
+     * Retrieve list of invitations to join a clinic
+     *
+     * @param {String} userId - User Id of the clinician
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicianInvites: function(userId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
-        `/clinics/clinicians/${clinicianId}`,
+        `/v1/clinicians/${userId}/invites`,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
     },
 
     /**
-     * Deletes clinician from all clinics
+     * Accept an invite to join a clinic as a clinician
      *
-     * @param {Number} clinicianId - Id of the clinician
+     * @param {String} userId - User Id of the clinician
+     * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
      */
-    deleteClinicsClinician: function(clinicianId, cb){
-      common.assertArgumentsSize(2);
+    acceptClinicianInvite: function(userId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doPutWithToken(
+        `/v1/clinicians/${userId}/invites/${inviteId}`,
+        null,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
+     * Dismisses an invite sent from a clinic to clinician
+     *
+     * @param {String} userId - User Id of invited clinician
+     * @param {String} inviteId - invite Id
+     * @param {Function} cb
+     */
+    dismissClinicianInvite: function(userId, inviteId, cb){
+      common.assertArgumentsSize(3);
       common.doDeleteWithToken(
-        `/clinics/clinicians/${clinicianId}`,
+        `/v1/clinicians/${userId}/invites/${inviteId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
+
+    /**
+     *
+     * @param {String} clinicianId - Id of the clinician
+     * @param {Object} [options]
+     * @param {Number} [options.offset] - Page of results
+     * @param {Number} [options.limit] - Results per page
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicsForClinician: function(clinicianId, options = {}, cb){
+      var url = `/v1/clinicians/${clinicianId}/clinics`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
