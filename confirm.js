@@ -186,9 +186,10 @@ module.exports = function (common, deps) {
      * @param cb
      * @returns {cb}  cb(err, response)
      */
-    inviteUser: function (email, permissions, key, inviterId, cb) {
-      common.assertArgumentsSize(arguments, 5);
-      var details = { email, permissions, key };
+    inviteUser: function (email, permissions, inviterId, cb) {
+      common.assertArgumentsSize(arguments, 4);
+
+      var details = { 'email':email,'permissions': permissions };
 
       common.doPostWithToken(
         '/confirm/send/invite/'+inviterId,
