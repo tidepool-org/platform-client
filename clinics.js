@@ -399,6 +399,23 @@ module.exports = function (common) {
     },
 
     /**
+     * Revoke (as a patient) or decline (as a clinic) a pending invite from patient user
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} inviteId - Id of the invite
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    deletePatientInvitation: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Update permissions that a clinic has for patient
      *
      * @param {String} clinicId - Id of the clinic
