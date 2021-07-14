@@ -73,6 +73,22 @@ module.exports = function (common) {
     },
 
     /**
+     * Retrieve a clinic by share code
+     *
+     * @param {String} shareCode - Share code of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicByShareCode: function(shareCode, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/share_code/${shareCode}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Update a clinic
      *
      * @param {String} clinicId - Id of the clinic
@@ -383,6 +399,23 @@ module.exports = function (common) {
     },
 
     /**
+     * Revoke (as a patient) or decline (as a clinic) a pending invite from patient user
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} inviteId - Id of the invite
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    deletePatientInvitation: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Update permissions that a clinic has for patient
      *
      * @param {String} clinicId - Id of the clinic
@@ -498,6 +531,26 @@ module.exports = function (common) {
       common.doGetWithToken(
         url,
         { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
+     * Invite a clinic
+     *
+     * @param {String} shareCode - share code of the clinic to invite
+     * @param {Object} permissions - permissions to be given
+     * @param {String} patientId - id of the patient that sent the invite
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+     inviteClinic: function (shareCode, permissions, patientId, cb) {
+      common.assertArgumentsSize(arguments, 4);
+      var details = { shareCode, permissions };
+
+      common.doPostWithToken(
+        `/confirm/send/invite/${patientId}/clinic`,
+        details,
         cb
       );
     },
