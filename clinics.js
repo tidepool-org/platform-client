@@ -549,7 +549,7 @@ module.exports = function (common) {
       var details = { shareCode, permissions };
 
       common.doPostWithToken(
-        '/confirm/send/invite/'+patientId+'/clinic',
+        `/confirm/send/invite/${patientId}/clinic`,
         details,
         cb
       );
