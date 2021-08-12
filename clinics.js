@@ -51,7 +51,7 @@ module.exports = function (common) {
       common.doPostWithToken(
         '/v1/clinics',
         clinic,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -67,7 +67,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(2);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -83,7 +83,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(2);
       common.doGetWithToken(
         `/v1/clinics/share_code/${shareCode}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -114,7 +114,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinics/${clinicId}`,
         clinic,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -159,7 +159,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -183,7 +183,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
         clinician,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -200,7 +200,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/clinicians/${clinicianId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -217,7 +217,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
-        { 204: null, 404: [] },
+        { 204: null },
         cb
       );
     },
@@ -266,7 +266,7 @@ module.exports = function (common) {
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/patients`,
         patient,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -283,7 +283,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -307,7 +307,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
         patient,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -326,7 +326,7 @@ module.exports = function (common) {
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/invites/clinicians`,
         clinician,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       )
     },
@@ -343,7 +343,7 @@ module.exports = function (common) {
       common.doPatchWithToken(
         `/v1/clinics/${clinicId}/invites/clinicians/${inviteId}`,
         '',
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       )
     },
@@ -359,7 +359,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/invites/clinicians/${inviteId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       )
     },
@@ -393,7 +393,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
         null,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -410,7 +410,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -429,7 +429,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}/permissions`,
         permissions,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -489,7 +489,7 @@ module.exports = function (common) {
       common.doPutWithToken(
         `/v1/clinicians/${userId}/invites/${inviteId}`,
         null,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       );
     },
@@ -505,7 +505,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinicians/${userId}/invites/${inviteId}`,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; } },
         cb
       )
     },
