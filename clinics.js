@@ -261,7 +261,7 @@ module.exports = function (common) {
      * @param {String[]} [patient.targetDevices] - Array of string target devices
      * @param {Function} cb
      */
-    createCustodialAccount: function (clinicId, patient, cb){
+    createClinicCustodialAccount: function (clinicId, patient, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/patients`,
