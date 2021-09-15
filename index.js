@@ -1123,7 +1123,7 @@ module.exports = function (config, deps) {
     createPrescription: prescription.createPrescription,
     createPrescriptionRevision: prescription.createPrescriptionRevision,
     deletePrescription: prescription.deletePrescription,
-    getPrescriptions: prescription.getPrescriptions,
+    getPrescriptionsForClinic: prescription.getPrescriptionsForClinic,
     /**
      * Devices
      */
