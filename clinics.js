@@ -554,5 +554,22 @@ module.exports = function (common) {
         cb
       );
     },
+
+    /**
+     * Invite a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+     triggerInitialClinicMigration: function (clinicId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/migrate`,
+        null,
+        cb
+      );
+    },
   };
 };

@@ -1159,5 +1159,6 @@ module.exports = function (config, deps) {
     dismissClinicianInvite: clinics.dismissClinicianInvite,
     getClinicsForClinician: clinics.getClinicsForClinician,
     inviteClinic: clinics.inviteClinic,
+    triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
   };
 };
