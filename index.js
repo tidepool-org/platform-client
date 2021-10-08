@@ -1123,7 +1123,7 @@ module.exports = function (config, deps) {
     createPrescription: prescription.createPrescription,
     createPrescriptionRevision: prescription.createPrescriptionRevision,
     deletePrescription: prescription.deletePrescription,
-    getPrescriptions: prescription.getPrescriptions,
+    getPrescriptionsForClinic: prescription.getPrescriptionsForClinic,
     /**
      * Devices
      */
@@ -1159,5 +1159,6 @@ module.exports = function (config, deps) {
     dismissClinicianInvite: clinics.dismissClinicianInvite,
     getClinicsForClinician: clinics.getClinicsForClinician,
     inviteClinic: clinics.inviteClinic,
+    triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
   };
 };
