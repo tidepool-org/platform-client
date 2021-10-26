@@ -332,6 +332,23 @@ module.exports = function (common) {
     },
 
     /**
+     * Retrieve an invitation sent to clinician to join the clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} inviteId - Id of the invite
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+    getClinicianInvite: function(clinicId, inviteId, cb){
+      common.assertArgumentsSize(3);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/invites/clinicians/${inviteId}`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
+
+    /**
      * Resend the clinician invite
      *
      * @param {String} clinicId - clinic Id
