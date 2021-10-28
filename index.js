@@ -1143,7 +1143,7 @@ module.exports = function (config, deps) {
     deleteClinicianFromClinic: clinics.deleteClinicianFromClinic,
     deletePatientFromClinic: clinics.deletePatientFromClinic,
     getPatientsForClinic: clinics.getPatientsForClinic,
-    createCustodialAccount: clinics.createCustodialAccount,
+    createClinicCustodialAccount: clinics.createClinicCustodialAccount,
     getPatientFromClinic: clinics.getPatientFromClinic,
     updateClinicPatient: clinics.updateClinicPatient,
     inviteClinician: clinics.inviteClinician,
