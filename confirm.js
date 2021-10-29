@@ -198,6 +198,23 @@ module.exports = function (common, deps) {
       );
     },
     /**
+     * Resend an invite
+     *
+     * @param {String} inviteId
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     */
+    resendInvite: function (inviteId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+
+      common.doPatchWithToken(
+        '/confirm/resend/invite/'+inviteId,
+        null,
+        cb
+      );
+    },
+
+    /**
      * Accept the invite
      *
      * @param {String} inviteId
