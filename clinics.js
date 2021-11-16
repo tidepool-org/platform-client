@@ -588,5 +588,22 @@ module.exports = function (common) {
         cb
       );
     },
+
+    /**
+     * List all migrations for a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+     */
+     getClinicMigrations: function (clinicId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/migrations`,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      );
+    },
   };
 };
