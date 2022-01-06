@@ -1123,7 +1123,7 @@ module.exports = function (config, deps) {
     createPrescription: prescription.createPrescription,
     createPrescriptionRevision: prescription.createPrescriptionRevision,
     deletePrescription: prescription.deletePrescription,
-    getPrescriptions: prescription.getPrescriptions,
+    getPrescriptionsForClinic: prescription.getPrescriptionsForClinic,
     /**
      * Devices
      */
@@ -1143,10 +1143,11 @@ module.exports = function (config, deps) {
     deleteClinicianFromClinic: clinics.deleteClinicianFromClinic,
     deletePatientFromClinic: clinics.deletePatientFromClinic,
     getPatientsForClinic: clinics.getPatientsForClinic,
-    createCustodialAccount: clinics.createCustodialAccount,
+    createClinicCustodialAccount: clinics.createClinicCustodialAccount,
     getPatientFromClinic: clinics.getPatientFromClinic,
     updateClinicPatient: clinics.updateClinicPatient,
     inviteClinician: clinics.inviteClinician,
+    getClinicianInvite: clinics.getClinicianInvite,
     resendClinicianInvite: clinics.resendClinicianInvite,
     deleteClinicianInvite: clinics.deleteClinicianInvite,
     getPatientInvites: clinics.getPatientInvites,
@@ -1159,5 +1160,6 @@ module.exports = function (config, deps) {
     dismissClinicianInvite: clinics.dismissClinicianInvite,
     getClinicsForClinician: clinics.getClinicsForClinician,
     inviteClinic: clinics.inviteClinic,
+    triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
   };
 };
