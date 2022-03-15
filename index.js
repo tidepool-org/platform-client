@@ -1094,6 +1094,7 @@ module.exports = function (config, deps) {
     createRestrictedTokenForUser: user.createRestrictedTokenForUser,
     createOAuthProviderAuthorization: user.createOAuthProviderAuthorization,
     deleteOAuthProviderAuthorization: user.deleteOAuthProviderAuthorization,
+    saveSession: user.saveSession,
     /**
      * Signup
      */

@@ -144,7 +144,9 @@ module.exports = function (common, config, deps) {
       });
     };
 
-    setTimeout(refreshSession, config.tokenRefreshInterval);
+    if(!options.noRefresh){
+      setTimeout(refreshSession, config.tokenRefreshInterval);
+    }
   }
   /**
    * Destroy user session (in-memory and stored in browser)
@@ -556,6 +558,7 @@ module.exports = function (common, config, deps) {
     updateCustodialUser: updateCustodialUser,
     createRestrictedTokenForUser: createRestrictedTokenForUser,
     createOAuthProviderAuthorization: createOAuthProviderAuthorization,
-    deleteOAuthProviderAuthorization: deleteOAuthProviderAuthorization
+    deleteOAuthProviderAuthorization: deleteOAuthProviderAuthorization,
+    saveSession: saveSession,
   };
 };
