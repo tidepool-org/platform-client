@@ -102,9 +102,18 @@ module.exports = function (common, config, deps) {
   }
   /**
    * Save user session (in-memory and stored in browser)
+   * @param newUserId user Id
+   * @param newToken session token
+   * @param options (optional) object with options `remember`, `noRefresh`
+   * @param cb
+   * @returns {cb} cb(err, response)
    */
-  function saveSession(newUserId, newToken, options) {
+  function saveSession(newUserId, newToken, options, cb) {
     options = options || {};
+    if (typeof options === 'function') {
+      cb = options;
+      options = {};
+    }
     myToken = newToken;
     common.syncToken(myToken);
     myUserId = newUserId;
@@ -147,6 +156,8 @@ module.exports = function (common, config, deps) {
     if(!options.noRefresh){
       setTimeout(refreshSession, config.tokenRefreshInterval);
     }
+
+    return cb(null, {userId: myUserId, token: myToken});
   }
   /**
    * Destroy user session (in-memory and stored in browser)
