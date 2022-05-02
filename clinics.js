@@ -599,7 +599,7 @@ module.exports = function (common) {
     sendPatientUploadReminder: function(clinicId, patientId, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
-        `/v1/clinics/${clinicId}/patients/${inviteId}/uploadReminder`,
+        `/v1/clinics/${clinicId}/patients/${patientId}/uploadReminder`,
         null,
         { 200: function(res){ return res.body; } },
         cb
