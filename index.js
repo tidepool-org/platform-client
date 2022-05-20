@@ -1161,5 +1161,6 @@ module.exports = function (config, deps) {
     getClinicsForClinician: clinics.getClinicsForClinician,
     inviteClinic: clinics.inviteClinic,
     triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
+    sendPatientUploadReminder: clinics.sendPatientUploadReminder,
   };
 };

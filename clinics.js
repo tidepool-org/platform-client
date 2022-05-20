@@ -13,7 +13,7 @@ module.exports = function (common) {
      * @param {String} [options.email] - Email address
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinics: function(options = {}, cb){
       common.assertArgumentsSize(2);
       var url = '/v1/clinics';
@@ -45,7 +45,7 @@ module.exports = function (common) {
      * @param {String} clinic.email - Primary email address for clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     createClinic: function(clinic, cb){
       common.assertArgumentsSize(2);
       common.doPostWithToken(
@@ -62,7 +62,7 @@ module.exports = function (common) {
      * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinic: function(clinicId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
@@ -78,7 +78,7 @@ module.exports = function (common) {
      * @param {String} shareCode - Share code of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinicByShareCode: function(shareCode, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
@@ -108,7 +108,7 @@ module.exports = function (common) {
      * @param {String} clinic.email - Primary email address for clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     updateClinic: function(clinicId, clinic, cb){
       common.assertArgumentsSize(3);
       common.doPutWithToken(
@@ -130,7 +130,7 @@ module.exports = function (common) {
      * @param {String} [options.email] - Email to search
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
      getCliniciansFromClinic: function(clinicId, options = {}, cb){
       var url = `/v1/clinics/${clinicId}/clinicians`;
       if(_.isFunction(options) && _.isUndefined(cb)){
@@ -154,7 +154,7 @@ module.exports = function (common) {
      * @param {String} clinicianId - Id of the clinician
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinician: function(clinicId, clinicianId, cb){
       common.assertArgumentsSize(3);
       common.doGetWithToken(
@@ -177,7 +177,7 @@ module.exports = function (common) {
      * @param {String[]} clinician.roles - Array of string roles
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     updateClinician: function(clinicId, clinicianId, clinician, cb){
       common.assertArgumentsSize(4);
       common.doPutWithToken(
@@ -195,7 +195,7 @@ module.exports = function (common) {
      * @param {String} clinicianId - Id of the clinician
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     deleteClinicianFromClinic: function(clinicId, clinicianId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
@@ -212,7 +212,7 @@ module.exports = function (common) {
      * @param {String} patientId - Id of the patient
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
      deletePatientFromClinic: function(clinicId, patientId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
@@ -232,7 +232,7 @@ module.exports = function (common) {
      * @param {Number} [options.limit] - results per page
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getPatientsForClinic: function(clinicId, options = {}, cb){
       var url = `/v1/clinics/${clinicId}/patients`;
       if(_.isFunction(options) && _.isUndefined(cb)){
@@ -260,7 +260,7 @@ module.exports = function (common) {
      * @param {String} [patient.mrn] - The medical record number of the patient
      * @param {String[]} [patient.targetDevices] - Array of string target devices
      * @param {Function} cb
-     */
+    */
     createClinicCustodialAccount: function (clinicId, patient, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
@@ -278,7 +278,7 @@ module.exports = function (common) {
      * @param {String} patientId - Id of the patient
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getPatientFromClinic: function(clinicId, patientId, cb){
       common.assertArgumentsSize(3);
       common.doGetWithToken(
@@ -301,7 +301,7 @@ module.exports = function (common) {
      * @param {String[]} [patient.targetDevices] - Array of string target devices
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     updateClinicPatient: function(clinicId, patientId, patient, cb){
       common.assertArgumentsSize(4);
       common.doPutWithToken(
@@ -320,7 +320,7 @@ module.exports = function (common) {
      * @param {String} clinician.email - clinician's email address
      * @param {String[]} clinician.roles - array of clinician's roles
      * @param {Function} cb
-     */
+    */
     inviteClinician: function(clinicId, clinician, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
@@ -338,7 +338,7 @@ module.exports = function (common) {
      * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinicianInvite: function(clinicId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doGetWithToken(
@@ -354,7 +354,7 @@ module.exports = function (common) {
      * @param {String} clinicId - clinic Id
      * @param {String} inviteId - invite Id
      * @param {Function} cb
-     */
+    */
     resendClinicianInvite: function(clinicId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doPatchWithToken(
@@ -371,7 +371,7 @@ module.exports = function (common) {
      * @param {String} clinicId - clinic Id
      * @param {String} inviteId - invite Id
      * @param {Function} cb
-     */
+    */
     deleteClinicianInvite: function(clinicId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
@@ -387,7 +387,7 @@ module.exports = function (common) {
      * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getPatientInvites: function(clinicId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
@@ -404,7 +404,7 @@ module.exports = function (common) {
      * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     acceptPatientInvitation: function(clinicId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doPutWithToken(
@@ -422,7 +422,7 @@ module.exports = function (common) {
      * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     deletePatientInvitation: function(clinicId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
@@ -440,7 +440,7 @@ module.exports = function (common) {
      * @param {Object} permissions - New permissions
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     updatePatientPermissions: function(clinicId, patientId, permissions, cb){
       common.assertArgumentsSize(4);
       common.doPutWithToken(
@@ -460,7 +460,7 @@ module.exports = function (common) {
      * @param {Number} [options.limit] - results per page
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinicsForPatient: function(userId, options = {}, cb){
       var url = `/v1/patients/${userId}/clinics`;
       if(_.isFunction(options) && _.isUndefined(cb)){
@@ -483,7 +483,7 @@ module.exports = function (common) {
      * @param {String} userId - User Id of the clinician
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinicianInvites: function(userId, cb){
       common.assertArgumentsSize(2);
       common.doGetWithToken(
@@ -500,7 +500,7 @@ module.exports = function (common) {
      * @param {String} inviteId - Id of the invite
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     acceptClinicianInvite: function(userId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doPutWithToken(
@@ -517,7 +517,7 @@ module.exports = function (common) {
      * @param {String} userId - User Id of invited clinician
      * @param {String} inviteId - invite Id
      * @param {Function} cb
-     */
+    */
     dismissClinicianInvite: function(userId, inviteId, cb){
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
@@ -535,7 +535,7 @@ module.exports = function (common) {
      * @param {Number} [options.limit] - Results per page
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
+    */
     getClinicsForClinician: function(clinicianId, options = {}, cb){
       var url = `/v1/clinicians/${clinicianId}/clinics`;
       if(_.isFunction(options) && _.isUndefined(cb)){
@@ -560,8 +560,8 @@ module.exports = function (common) {
      * @param {String} patientId - id of the patient that sent the invite
      * @param cb
      * @returns {cb}  cb(err, response)
-     */
-     inviteClinic: function (shareCode, permissions, patientId, cb) {
+    */
+    inviteClinic: function (shareCode, permissions, patientId, cb) {
       common.assertArgumentsSize(arguments, 4);
       var details = { shareCode, permissions };
 
@@ -578,12 +578,28 @@ module.exports = function (common) {
      * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
-     */
-     triggerInitialClinicMigration: function (clinicId, cb) {
+    */
+    triggerInitialClinicMigration: function (clinicId, cb) {
       common.assertArgumentsSize(arguments, 2);
 
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/migrate`,
+        null,
+        cb
+      );
+    },
+
+    /**
+     * sendPatientUploadReminder
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} patientId - id of the patient to send the reminder to
+     * @param {Function} cb
+    */
+    sendPatientUploadReminder: function(clinicId, patientId, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}/upload_reminder`,
         null,
         cb
       );
