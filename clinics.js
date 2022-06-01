@@ -579,12 +579,12 @@ module.exports = function (common) {
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */
-    triggerInitialClinicMigration: function (clinicId, cb) {
-      common.assertArgumentsSize(arguments, 2);
+    triggerInitialClinicMigration: function (clinicId, attestationSubmitted, cb) {
+      common.assertArgumentsSize(arguments, 3);
 
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/migrate`,
-        null,
+        { attestationSubmitted },
         cb
       );
     },
