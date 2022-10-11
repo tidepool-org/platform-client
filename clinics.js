@@ -604,5 +604,55 @@ module.exports = function (common) {
         cb
       );
     },
+
+    /**
+     * createClinicPatientTag
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {Object} patientTag - the patient tag to create
+     * @param {String} patientTag.name - the tag name
+     * @param {Function} cb
+    */
+     createClinicPatientTag: function(clinicId, patientTag, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/patient_tags`,
+        patientTag,
+        cb
+      );
+    },
+
+    /**
+     * updateClinicPatientTag
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} patientTagId - id of patient tag to update
+     * @param {Object} patientTag - the updated patient tag
+     * @param {String} patientTag.name - the updated tag name
+     * @param {Function} cb
+    */
+     updateClinicPatientTag: function(clinicId, patientTagId, patientTag, cb){
+      common.assertArgumentsSize(4);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
+        patientTag,
+        cb
+      );
+    },
+
+    /**
+     * deleteClinicPatientTag
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} patientTagId - id of patient tag to delete
+     * @param {Function} cb
+    */
+     deleteClinicPatientTag: function(clinicId, patientTagId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
+        cb
+      );
+    },
   };
 };
