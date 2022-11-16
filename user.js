@@ -114,6 +114,7 @@ module.exports = function (common, config, deps) {
       cb = options;
       options = {};
     }
+    cb = cb ?? _.noop;
     myToken = newToken;
     common.syncToken(myToken);
     myUserId = newUserId;
