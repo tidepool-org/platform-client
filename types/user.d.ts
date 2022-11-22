@@ -1,0 +1,20 @@
+declare function _exports(common: any, config: any, deps: any): {
+    acceptTerms: (user: any, cb: any, ...args: any[]) => any;
+    createCustodialAccount: (profile: any, cb: any) => any;
+    destroySession: () => void;
+    getCurrentUser: (cb: any, ...args: any[]) => any;
+    getUserId: () => string;
+    getUserToken: () => string;
+    isLoggedIn: () => boolean;
+    login: (user: any, options: any, cb: any) => any;
+    oauthLogin: (oauthToken: any, cb: any) => any;
+    logout: (cb: any, ...args: any[]) => any;
+    signup: (user: any, options: any, cb: any) => any;
+    initialize: (cb: any) => any;
+    updateCurrentUser: (user: any, cb: any, ...args: any[]) => any;
+    updateCustodialUser: (user: any, id: any, cb: any, ...args: any[]) => any;
+    createRestrictedTokenForUser: (userId: string, restrictedTokenRequest: string, cb: any, ...args: any[]) => any;
+    createOAuthProviderAuthorization: (provider: string, restrictedToken: string, cb: any, ...args: any[]) => any;
+    deleteOAuthProviderAuthorization: (provider: string, cb: any, ...args: any[]) => any;
+};
+export = _exports;
