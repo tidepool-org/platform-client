@@ -1163,6 +1163,7 @@ module.exports = function (config, deps) {
     inviteClinic: clinics.inviteClinic,
     triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
     sendPatientUploadReminder: clinics.sendPatientUploadReminder,
+    sendPatientDexcomConnectRequest: clinics.sendPatientDexcomConnectRequest,
     createClinicPatientTag: clinics.createClinicPatientTag,
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,
