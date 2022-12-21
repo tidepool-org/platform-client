@@ -606,6 +606,22 @@ module.exports = function (common) {
     },
 
     /**
+     * sendPatientDexcomConnectReminder
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} patientId - id of the patient to send the dexcom connect request to
+     * @param {Function} cb
+    */
+     sendPatientDexcomConnectRequest: function(clinicId, patientId, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}/send_dexcom_connect_request`,
+        null,
+        cb
+      );
+    },
+
+    /**
      * createClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
