@@ -1167,5 +1167,6 @@ module.exports = function (config, deps) {
     createClinicPatientTag: clinics.createClinicPatientTag,
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,
+    getPatientsForTideDashboard: clinics.getPatientsForTideDashboard,
   };
 };
