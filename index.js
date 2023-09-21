@@ -1155,6 +1155,8 @@ module.exports = function (config, deps) {
     acceptPatientInvitation: clinics.acceptPatientInvitation,
     deletePatientInvitation: clinics.deletePatientInvitation,
     updatePatientPermissions: clinics.updatePatientPermissions,
+    getClinicMRNSettings: clinics.getClinicMRNSettings,
+    getClinicEHRSettings: clinics.getClinicEHRSettings,
     getClinicsForPatient: clinics.getClinicsForPatient,
     getClinicianInvites: clinics.getClinicianInvites,
     acceptClinicianInvite: clinics.acceptClinicianInvite,

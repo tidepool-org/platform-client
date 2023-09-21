@@ -452,6 +452,38 @@ module.exports = function (common) {
     },
 
     /**
+     * Get the MRN settings for a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicMRNSettings: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/settings/mrn`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
+
+    /**
+     * Get the EHR settings for a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicEHRSettings: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/settings/ehr`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
+
+    /**
      * Get list of clinics associated with patient
      *
      * @param {String} userId - Patient user id
