@@ -1155,6 +1155,8 @@ module.exports = function (config, deps) {
     acceptPatientInvitation: clinics.acceptPatientInvitation,
     deletePatientInvitation: clinics.deletePatientInvitation,
     updatePatientPermissions: clinics.updatePatientPermissions,
+    getClinicMRNSettings: clinics.getClinicMRNSettings,
+    getClinicEHRSettings: clinics.getClinicEHRSettings,
     getClinicsForPatient: clinics.getClinicsForPatient,
     getClinicianInvites: clinics.getClinicianInvites,
     acceptClinicianInvite: clinics.acceptClinicianInvite,
@@ -1167,5 +1169,6 @@ module.exports = function (config, deps) {
     createClinicPatientTag: clinics.createClinicPatientTag,
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,
+    getPatientsForTideDashboard: clinics.getPatientsForTideDashboard,
   };
 };

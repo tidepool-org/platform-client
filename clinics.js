@@ -452,6 +452,38 @@ module.exports = function (common) {
     },
 
     /**
+     * Get the MRN settings for a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicMRNSettings: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/settings/mrn`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
+
+    /**
+     * Get the EHR settings for a clinic
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicEHRSettings: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/settings/ehr`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
+
+    /**
      * Get list of clinics associated with patient
      *
      * @param {String} userId - Patient user id
@@ -669,6 +701,34 @@ module.exports = function (common) {
         `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
         cb
       );
+    },
+
+    /**
+     * Get list of patients for Tide Dashboard
+     *
+     * @param {Object} api - an instance of the API wrapper
+     * @param {String} clinicId - Id of the clinic
+     * @param {Object} [options] - search options
+     * @param {Number} [options.period] - period to sort by (1d|7d|14d|30d)
+     * @param {Number} [options.lastUploadDateFrom] - ISO date for start of last upload date filter range
+     * @param {Number} [options.lastUploadDateTo] - ISO date for end of last upload date filter range
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getPatientsForTideDashboard: function(clinicId, options = {}, cb){
+      var url = `/v1/clinics/${clinicId}/tide_dashboard_patients`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
     },
   };
 };
