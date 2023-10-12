@@ -708,15 +708,16 @@ module.exports = function (common) {
      *
      * @param {Object} api - an instance of the API wrapper
      * @param {String} clinicId - Id of the clinic
-     * @param {Object} [options] - search options
+     * @param {Object} [options] - report config options
      * @param {Number} [options.period] - period to sort by (1d|7d|14d|30d)
+     * @param {Array}  [options.tags] - Array of patient tag IDs
      * @param {Number} [options.lastUploadDateFrom] - ISO date for start of last upload date filter range
      * @param {Number} [options.lastUploadDateTo] - ISO date for end of last upload date filter range
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */
     getPatientsForTideDashboard: function(clinicId, options = {}, cb){
-      var url = `/v1/clinics/${clinicId}/tide_dashboard_patients`;
+      var url = `/v1/clinics/${clinicId}/tide_report`;
       if(_.isFunction(options) && _.isUndefined(cb)){
         cb = options;
         options = {};
