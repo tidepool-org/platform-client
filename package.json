@@ -1,5 +1,8 @@
 {
   "name": "tidepool-platform-client",
+  "engines": {
+    "node": "20.8.0"
+  },
   "version": "0.54.0-web-2595-critical-depandancy-updates.2",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
@@ -11,5 +14,6 @@
     "lodash": "4.17.21",
     "superagent": "5.2.2",
     "uuid": "3.1.0"
-  }
+  },
+  "packageManager": "yarn@3.6.4"
 }
