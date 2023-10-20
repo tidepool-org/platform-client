@@ -462,7 +462,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(2);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}/settings/mrn`,
-        { 200: function(res){ return res.body; } },
+        { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
     },
@@ -478,7 +478,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(2);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}/settings/ehr`,
-        { 200: function(res){ return res.body; } },
+        { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
     },
