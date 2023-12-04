@@ -21,6 +21,9 @@ before_install:
 install:
   - yarn install --immutable
 
+script:
+  - yarn --version
+
 matrix:
   allow_failures:
     - node_js: stable
