@@ -15,7 +15,8 @@ npm-debug.log
 node_modules
 package-lock.json
 
-# yarn
+# yarn (ref https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored)
+.pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
