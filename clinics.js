@@ -410,8 +410,11 @@ module.exports = function (common) {
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */
-    acceptPatientInvitation: function(clinicId, inviteId, patientDetails = null, cb){
-      common.assertArgumentsSize(3);
+    acceptPatientInvitation: function(clinicId, inviteId, patientDetails, cb){
+      if(_.isFunction(patientDetails) && _.isUndefined(cb)){
+        cb = patientDetails;
+        patientDetails = null;
+      }
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
         patientDetails,
