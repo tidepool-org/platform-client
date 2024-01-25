@@ -402,14 +402,22 @@ module.exports = function (common) {
      *
      * @param {String} clinicId - Id of the clinic
      * @param {String} inviteId - Id of the invite
+     * @param {Object} [patientDetails] - Patient details to set for newly created clinic user
+     * @param {String} [patientDetails.fullName] - The full name of the patient
+     * @param {String} [patientDetails.birthDate] - YYYY-MM-DD
+     * @param {String} [patientDetails.mrn] - The medical record number of the patient
+     * @param {String[]} [patientDetails.tags] - Array of string tag IDs
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */
-    acceptPatientInvitation: function(clinicId, inviteId, cb){
-      common.assertArgumentsSize(3);
+    acceptPatientInvitation: function(clinicId, inviteId, patientDetails, cb){
+      if(_.isFunction(patientDetails) && _.isUndefined(cb)){
+        cb = patientDetails;
+        patientDetails = null;
+      }
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/invites/patients/${inviteId}`,
-        null,
+        patientDetails,
         { 200: function(res){ return res.body; } },
         cb
       );
