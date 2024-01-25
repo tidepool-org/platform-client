@@ -1,12 +1,26 @@
 language: node_js
 
+dist: jammy
+
 node_js:
-  - "10.14.2"
-  - node
+  - "20.8.0"
+  - "stable"
+
+cache:
+  yarn: true
+  directories:
+    - node_modules
+
+before_install:
+  - corepack enable
+  - yarn set version 3.6.4
+
+install:
+  - yarn install --immutable
 
 script:
-  - npm test
+  - yarn --version
 
 matrix:
   allow_failures:
-    - node_js: node
+    - node_js: stable
