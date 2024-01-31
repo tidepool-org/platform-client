@@ -1170,5 +1170,6 @@ module.exports = function (config, deps) {
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,
     getPatientsForTideDashboard: clinics.getPatientsForTideDashboard,
+    getPatientsForRpmReport: clinics.getPatientsForRpmReport,
   };
 };
