@@ -739,5 +739,39 @@ module.exports = function (common) {
         cb
       )
     },
+
+    /**
+     * Get patient count for a clinic
+     *
+     * @param {Object} api - an instance of the API wrapper
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicPatientCount: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/patient_count`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
+
+    /**
+     * Get patient count settings for a clinic
+     *
+     * @param {Object} api - an instance of the API wrapper
+     * @param {String} clinicId - Id of the clinic
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getClinicPatientCountSettings: function(clinicId, cb){
+      common.assertArgumentsSize(2);
+      common.doGetWithToken(
+        `/v1/clinics/${clinicId}/settings/patient_count`,
+        { 200: function(res){ return res.body; }, 404: {} },
+        cb
+      );
+    },
   };
 };
