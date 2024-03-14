@@ -3,6 +3,7 @@
   "version": "0.56.0-web-2763-pendo-patient-count.1",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "test": "grunt test"
   },
