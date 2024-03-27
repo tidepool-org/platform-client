@@ -752,7 +752,7 @@ module.exports = function (common) {
      * @returns {cb} cb(err, response)
     */
     getPatientsForRpmReport: function(clinicId, options = {}, cb){
-      var url = `/v1/clinics/${clinicId}/rpm_report`;
+      var url = `/v1/summaries/realtime/${clinicId}`;
       if(_.isFunction(options) && _.isUndefined(cb)){
         cb = options;
         options = {};
