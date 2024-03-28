@@ -1,7 +1,7 @@
 {
   "name": "tidepool-platform-client",
   "engines": {
-    "node": "20.8.0"
+    "node": ">=18"
   },
   "packageManager": "yarn@3.6.4",
   "version": "0.56.0-web-2595-critical-depandancy-updates.1",
