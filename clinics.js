@@ -752,7 +752,7 @@ module.exports = function (common) {
      * @returns {cb} cb(err, response)
     */
     getPatientsForRpmReport: function(clinicId, options = {}, cb){
-      var url = `/v1/summaries/realtime/${clinicId}`;
+      var url = `/v1/clinics/${clinicId}/reports/realtime`;
       if(_.isFunction(options) && _.isUndefined(cb)){
         cb = options;
         options = {};
@@ -762,7 +762,7 @@ module.exports = function (common) {
       }
       common.doGetWithToken(
         url,
-        { 200: function(res){ return res.body; }, 404: [] },
+        { 200: function(res){ return res.body; }, 404: {} },
         cb
       )
     },
