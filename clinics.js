@@ -741,6 +741,33 @@ module.exports = function (common) {
     },
 
     /**
+     * Get list of patients for RPM Report
+     *
+     * @param {Object} api - an instance of the API wrapper
+     * @param {String} clinicId - Id of the clinic
+     * @param {Object} [options] - report config options
+     * @param {Number} [options.startDate] - UTC ISO datetime for first day of the report range
+     * @param {Number} [options.endDate] - UTC ISO datetime for last day of the report range
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getPatientsForRpmReport: function(clinicId, options = {}, cb){
+      var url = `/v1/clinics/${clinicId}/reports/realtime`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: {} },
+        cb
+      )
+    },
+
+    /*
      * Get patient count for a clinic
      *
      * @param {Object} api - an instance of the API wrapper
