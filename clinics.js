@@ -757,7 +757,10 @@ module.exports = function (common) {
         cb = options;
         options = {};
       }
-      if(!_.isEmpty(options)){
+      if (!_.isEmpty(options)) {
+        if (_.isPlainObject(options.patientFilters)) {
+          options.patientFilters = JSON.stringify(options.patientFilters);
+        }
         url += '?' + common.serialize(options);
       }
       common.doGetWithToken(
