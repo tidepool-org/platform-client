@@ -714,7 +714,6 @@ module.exports = function (common) {
     /**
      * Get list of patients for Tide Dashboard
      *
-     * @param {Object} api - an instance of the API wrapper
      * @param {String} clinicId - Id of the clinic
      * @param {Object} [options] - report config options
      * @param {Number} [options.period] - period to sort by (1d|7d|14d|30d)
@@ -743,7 +742,6 @@ module.exports = function (common) {
     /**
      * Get list of patients for RPM Report
      *
-     * @param {Object} api - an instance of the API wrapper
      * @param {String} clinicId - Id of the clinic
      * @param {Object} [options] - report config options
      * @param {Number} [options.startDate] - UTC ISO datetime for first day of the report range
@@ -773,7 +771,6 @@ module.exports = function (common) {
     /*
      * Get patient count for a clinic
      *
-     * @param {Object} api - an instance of the API wrapper
      * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
@@ -790,7 +787,6 @@ module.exports = function (common) {
     /**
      * Get patient count settings for a clinic
      *
-     * @param {Object} api - an instance of the API wrapper
      * @param {String} clinicId - Id of the clinic
      * @param {Function} cb
      * @returns {cb} cb(err, response)
@@ -799,6 +795,40 @@ module.exports = function (common) {
       common.assertArgumentsSize(2);
       common.doGetWithToken(
         `/v1/clinics/${clinicId}/settings/patient_count`,
+        { 200: function(res){ return res.body; }, 404: {} },
+        cb
+      );
+    },
+
+    /**
+     * Mark a clinic patient as reviewed
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - id of the patient to mark reviewed
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    setClinicPatientLastReviewed: function(clinicId, patientId, cb){
+      common.assertArgumentsSize(2);
+      common.doUpdateWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}/last_reviewed`,
+        { 200: function(res){ return res.body; }, 404: {} },
+        cb
+      );
+    },
+
+    /**
+     * Revert a clinic patient last reviewed date
+     *
+     * @param {String} clinicId - Id of the clinic
+     * @param {String} patientId - id of the patient to revert
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    revertClinicPatientLastReviewed: function(clinicId, patientId, cb){
+      common.assertArgumentsSize(2);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/patients/${patientId}/last_reviewed`,
         { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
