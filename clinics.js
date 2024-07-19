@@ -811,7 +811,7 @@ module.exports = function (common) {
     setClinicPatientLastReviewed: function(clinicId, patientId, cb){
       common.assertArgumentsSize(2);
       common.doPutWithToken(
-        `/v1/clinics/${clinicId}/patients/${patientId}/last_reviewed`,
+        `/v1/clinics/${clinicId}/patients/${patientId}/reviews`,
         { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
@@ -828,7 +828,7 @@ module.exports = function (common) {
     revertClinicPatientLastReviewed: function(clinicId, patientId, cb){
       common.assertArgumentsSize(2);
       common.doDeleteWithToken(
-        `/v1/clinics/${clinicId}/patients/${patientId}/last_reviewed`,
+        `/v1/clinics/${clinicId}/patients/${patientId}/reviews`,
         { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
