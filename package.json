@@ -4,7 +4,7 @@
     "node": ">=18"
   },
   "packageManager": "yarn@3.6.4",
-  "version": "0.59.0-web-2994-web-2993-last-reviewed.2",
+  "version": "0.59.0",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
   "repository": "https://github.com/tidepool-org/platform-client.git",
