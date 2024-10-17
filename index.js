@@ -490,6 +490,26 @@ module.exports = function (config, deps) {
         });
     },
     /**
+     * Check the expected minimum versions for uploading
+     *
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     * e.g.  {versions: {schema: 3, uploaderMinimum: '0.333.0'}}
+     */
+     getInfoForUser: function (userId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+      superagent
+        .get(common.makeUploadUrl('/info/' + userId))
+        .retry()
+        .end(
+        function (err, res) {
+          if (err != null) {
+            return cb(err);
+          }
+          return cb(null,res.body);
+        });
+    },
+    /**
      * Get server time
      *
      * @param cb
