@@ -718,8 +718,7 @@ module.exports = function (common) {
      * @param {Object} [options] - report config options
      * @param {Number} [options.period] - period to sort by (1d|7d|14d|30d)
      * @param {Array}  [options.tags] - Array of patient tag IDs
-     * @param {Number} [options.lastUploadDateFrom] - ISO date for start of last upload date filter range
-     * @param {Number} [options.lastUploadDateTo] - ISO date for end of last upload date filter range
+     * @param {Number} [options.lastDataCutoff] - ISO date for data recency cutoff date
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */
