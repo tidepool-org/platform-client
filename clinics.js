@@ -658,6 +658,7 @@ module.exports = function (common) {
       common.doPostWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}/connect/${providerName}`,
         null,
+        { 204: null },
         cb
       );
     },
