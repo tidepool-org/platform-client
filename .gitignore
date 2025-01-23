@@ -26,3 +26,5 @@ package-lock.json
 
 *.iml
 .idea
+
+.codegpt
