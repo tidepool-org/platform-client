@@ -304,9 +304,29 @@ module.exports = function (common) {
     */
     updateClinicPatient: function(clinicId, patientId, patient, cb){
       common.assertArgumentsSize(4);
+
+      // Explicitly omit any fields that are never expected to be updated from frontend clients.
+      // Note that some fields that we don't provide a means to update are still sent along if they don't
+      // implement `omitEmpty` when being written to the database, as they would otherwise be deleted.
+      const patientUpdate = _.omit(patient, [
+        'clinicId',
+        'createdTime',
+        'ehrSubscriptions',
+        'id',
+        'isMigrated',
+        'legacyClinicianIds',
+        'invitedBy',
+        'lastUploadReminderTime',
+        'permissions',
+        'reviews',
+        'summary',
+        'updatedTime',
+        'userId',
+      ]);
+
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
-        patient,
+        patientUpdate,
         { 200: function(res){ return res.body; } },
         cb
       );
