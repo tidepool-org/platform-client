@@ -457,6 +457,7 @@ module.exports = function (config, deps) {
         'type',
         'uploadId',
         'deviceId',
+        'sampleIntervalMinimum',
         'subType',
       ];
 
