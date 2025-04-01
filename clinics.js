@@ -304,9 +304,29 @@ module.exports = function (common) {
     */
     updateClinicPatient: function(clinicId, patientId, patient, cb){
       common.assertArgumentsSize(4);
+
+      // Explicitly omit any fields that are never expected to be updated from frontend clients.
+      // Note that some fields that we don't provide a means to update are still sent along if they don't
+      // implement `omitEmpty` when being written to the database, as they would otherwise be deleted.
+      const patientUpdate = _.omit(patient, [
+        'clinicId',
+        'createdTime',
+        'ehrSubscriptions',
+        'id',
+        'isMigrated',
+        'legacyClinicianIds',
+        'invitedBy',
+        'lastUploadReminderTime',
+        'permissions',
+        'reviews',
+        'summary',
+        'updatedTime',
+        'userId',
+      ]);
+
       common.doPutWithToken(
         `/v1/clinics/${clinicId}/patients/${patientId}`,
-        patient,
+        patientUpdate,
         { 200: function(res){ return res.body; } },
         cb
       );
@@ -646,17 +666,19 @@ module.exports = function (common) {
     },
 
     /**
-     * sendPatientDexcomConnectReminder
+     * sendPatientDataProviderConnectRequest
      *
      * @param {String} clinicId - clinic Id
      * @param {String} patientId - id of the patient to send the dexcom connect request to
+     * @param {String} providerName - name of the provider to send the dexcom connect request to
      * @param {Function} cb
     */
-     sendPatientDexcomConnectRequest: function(clinicId, patientId, cb){
+     sendPatientDataProviderConnectRequest: function(clinicId, patientId, providerName, cb){
       common.assertArgumentsSize(3);
       common.doPostWithToken(
-        `/v1/clinics/${clinicId}/patients/${patientId}/send_dexcom_connect_request`,
+        `/v1/clinics/${clinicId}/patients/${patientId}/connect/${providerName}`,
         null,
+        { 204: null },
         cb
       );
     },
@@ -718,8 +740,7 @@ module.exports = function (common) {
      * @param {Object} [options] - report config options
      * @param {Number} [options.period] - period to sort by (1d|7d|14d|30d)
      * @param {Array}  [options.tags] - Array of patient tag IDs
-     * @param {Number} [options.lastUploadDateFrom] - ISO date for start of last upload date filter range
-     * @param {Number} [options.lastUploadDateTo] - ISO date for end of last upload date filter range
+     * @param {Number} [options.lastDataCutoff] - ISO date for data recency cutoff date
      * @param {Function} cb
      * @returns {cb} cb(err, response)
     */

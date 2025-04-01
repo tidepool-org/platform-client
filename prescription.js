@@ -61,13 +61,23 @@ module.exports = function (common) {
      * Get all prescriptions for a clinic
      *
      * @param {String} clinicId - id of the clinic
-     * @param cb
+     * @param {Object} [options]
+     * @param {Number} [options.size] - Query result limit
+     * @param {Number} [options.page] - Query page offset
+     * @param cb*
      * @returns {cb} cb(err, response)
      */
-    getPrescriptionsForClinic: function (clinicId, cb) {
-      common.assertArgumentsSize(arguments, 2);
+    getPrescriptionsForClinic: function (clinicId, options = {}, cb) {
+      var url = `/v1/clinics/${clinicId}/prescriptions`;
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
       common.doGetWithToken(
-        `/v1/clinics/${clinicId}/prescriptions`,
+        url,
         { 200: function(res){ return res.body; }, 404: [] },
         cb
       );
