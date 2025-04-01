@@ -490,6 +490,27 @@ module.exports = function (config, deps) {
         });
     },
     /**
+     * Get info for a specific user, e.g. uploader destination (jellyfish/platform)
+     *
+     * @param {String} userId of the user to get info for
+     * @param cb
+     * @returns {cb}  cb(err, response)
+     * e.g.  {versions: {schema: 3, uploaderMinimum: '0.333.0'}, uploaderDestination:"jellyfish"}
+     */
+     getInfoForUser: function (userId, cb) {
+      common.assertArgumentsSize(arguments, 2);
+      superagent
+        .get(common.makeUploadUrl('/info/' + userId))
+        .retry()
+        .end(
+        function (err, res) {
+          if (err != null) {
+            return cb(err);
+          }
+          return cb(null,res.body);
+        });
+    },
+    /**
      * Get server time
      *
      * @param cb
