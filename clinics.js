@@ -854,5 +854,35 @@ module.exports = function (common) {
         cb
       );
     },
+
+    /**
+     * Get list of patients
+     *
+     * @param {Object} [options] - search options
+     * @param {String} [options.search] - search query string
+     * @param {String} [options.mrn] - Medical Record Number
+     * @param {String} [options.birthDate] - Patient birth date
+     * @param {String} [options.workspaceId] - Workspace identifier
+     * @param {String} [options.workspaceIdType] - Type of workspace ID (clinicId or ehrSourceId)
+     * @param {Number} [options.offset] - search page offset
+     * @param {Number} [options.limit] - results per page
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getPatients: function(options = {}, cb){
+      var url = '/v1/patients';
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
+    },
   };
 };

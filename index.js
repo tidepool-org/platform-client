@@ -1175,5 +1175,6 @@ module.exports = function (config, deps) {
     getClinicPatientCountSettings: clinics.getClinicPatientCountSettings,
     setClinicPatientLastReviewed: clinics.setClinicPatientLastReviewed,
     revertClinicPatientLastReviewed: clinics.revertClinicPatientLastReviewed,
+    getPatients: clinics.getPatients,
   };
 };
