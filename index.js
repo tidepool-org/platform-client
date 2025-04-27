@@ -35,8 +35,8 @@ module.exports = function (config, deps) {
 
   var superagent = requireDep(deps, 'superagent');
   var log = requireDep(deps, 'log');
+  var config = _.clone(config);
 
-  config = _.clone(config);
   requireConfig(config, 'host');
   requireConfig(config, 'metricsSource');
   requireConfig(config, 'metricsVersion');
@@ -843,9 +843,13 @@ module.exports = function (config, deps) {
           var syncTask = res.body;
           var syncTaskId = syncTask.id;
 
-          if (!syncTaskId) {
+          if (syncTaskId == null) {
+            syncTaskId = res.body.syncTaskId;
+          }
+
+          if (syncTaskId == null) {
             log.info('Upload Failed');
-            return cb({message: 'No sync task id'});
+            return cb({message: 'No sync task id', response: res.body});
           }
 
           waitForSyncTaskWithIdToFinish(syncTaskId,function(err,data){
@@ -883,6 +887,10 @@ module.exports = function (config, deps) {
 
           if (res.status !== 200) {
             return common.handleHttpError(res, cb);
+          }
+
+          if (res.headers['content-type'] === 'application/octet-stream') {
+            return superagent.parse.text(res, function(){ cb(null, res.text); });
           }
 
           return cb(null, res.text);
