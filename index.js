@@ -450,6 +450,7 @@ module.exports = function (config, deps) {
       var allowedParams = [
         'carelink',
         'dexcom',
+        'dosingDecision.reason',
         'medtronic',
         'startDate',
         'endDate',
