@@ -452,6 +452,7 @@ module.exports = function (config, deps) {
         'dexcom',
         'dosingDecision.reason',
         'medtronic',
+        'cbgFilter',
         'startDate',
         'endDate',
         'latest',
