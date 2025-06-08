@@ -1168,6 +1168,7 @@ module.exports = function (config, deps) {
     triggerInitialClinicMigration: clinics.triggerInitialClinicMigration,
     sendPatientUploadReminder: clinics.sendPatientUploadReminder,
     sendPatientDataProviderConnectRequest: clinics.sendPatientDataProviderConnectRequest,
+    createClinicSite: clinics.createClinicSite,
     createClinicPatientTag: clinics.createClinicPatientTag,
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,

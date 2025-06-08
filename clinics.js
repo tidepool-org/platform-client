@@ -684,6 +684,23 @@ module.exports = function (common) {
     },
 
     /**
+     * createClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {Object} site - the patient tag to create
+     * @param {String} site.name - the tag name
+     * @param {Function} cb
+    */
+     createClinicSite: function(clinicId, site, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/sites`,
+        site,
+        cb
+      );
+    },
+
+    /**
      * createClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
