@@ -1169,6 +1169,7 @@ module.exports = function (config, deps) {
     sendPatientUploadReminder: clinics.sendPatientUploadReminder,
     sendPatientDataProviderConnectRequest: clinics.sendPatientDataProviderConnectRequest,
     createClinicSite: clinics.createClinicSite,
+    updateClinicSite: clinics.updateClinicSite,
     createClinicPatientTag: clinics.createClinicPatientTag,
     updateClinicPatientTag: clinics.updateClinicPatientTag,
     deleteClinicPatientTag: clinics.deleteClinicPatientTag,

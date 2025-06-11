@@ -718,6 +718,24 @@ module.exports = function (common) {
     },
 
     /**
+     * updateClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of patient tag to update
+     * @param {Object} site - the updated patient tag
+     * @param {String} site.name - the updated tag name
+     * @param {Function} cb
+    */
+     updateClinicSite: function(clinicId, siteId, site, cb){
+      common.assertArgumentsSize(4);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        site,
+        cb
+      );
+    },
+
+    /**
      * updateClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
