@@ -451,12 +451,14 @@ module.exports = function (config, deps) {
         'carelink',
         'dexcom',
         'medtronic',
+        'cbgFilter',
         'startDate',
         'endDate',
         'latest',
         'type',
         'uploadId',
         'deviceId',
+        'sampleIntervalMinimum',
         'subType',
       ];
 
