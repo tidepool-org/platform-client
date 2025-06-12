@@ -701,23 +701,6 @@ module.exports = function (common) {
     },
 
     /**
-     * createClinicPatientTag
-     *
-     * @param {String} clinicId - clinic Id
-     * @param {Object} patientTag - the patient tag to create
-     * @param {String} patientTag.name - the tag name
-     * @param {Function} cb
-    */
-     createClinicPatientTag: function(clinicId, patientTag, cb){
-      common.assertArgumentsSize(3);
-      common.doPostWithToken(
-        `/v1/clinics/${clinicId}/patient_tags`,
-        patientTag,
-        cb
-      );
-    },
-
-    /**
      * updateClinicSite
      *
      * @param {String} clinicId - clinic Id
@@ -746,6 +729,23 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/sites/${siteId}`,
+        cb
+      );
+    },
+
+    /**
+     * createClinicPatientTag
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {Object} patientTag - the patient tag to create
+     * @param {String} patientTag.name - the tag name
+     * @param {Function} cb
+    */
+     createClinicPatientTag: function(clinicId, patientTag, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/patient_tags`,
+        patientTag,
         cb
       );
     },
