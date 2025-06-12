@@ -736,6 +736,21 @@ module.exports = function (common) {
     },
 
     /**
+     * deleteClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of patient tag to delete
+     * @param {Function} cb
+    */
+     deleteClinicSite: function(clinicId, siteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        cb
+      );
+    },
+
+    /**
      * updateClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
