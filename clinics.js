@@ -687,8 +687,8 @@ module.exports = function (common) {
      * createClinicSite
      *
      * @param {String} clinicId - clinic Id
-     * @param {Object} site - the patient tag to create
-     * @param {String} site.name - the tag name
+     * @param {Object} site - the site to create
+     * @param {String} site.name - the site name
      * @param {Function} cb
     */
      createClinicSite: function(clinicId, site, cb){
@@ -704,9 +704,9 @@ module.exports = function (common) {
      * updateClinicSite
      *
      * @param {String} clinicId - clinic Id
-     * @param {String} siteId - id of patient tag to update
-     * @param {Object} site - the updated patient tag
-     * @param {String} site.name - the updated tag name
+     * @param {String} siteId - id of site to update
+     * @param {Object} site - the updated site
+     * @param {String} site.name - the updated site name
      * @param {Function} cb
     */
      updateClinicSite: function(clinicId, siteId, site, cb){
@@ -722,7 +722,7 @@ module.exports = function (common) {
      * deleteClinicSite
      *
      * @param {String} clinicId - clinic Id
-     * @param {String} siteId - id of patient tag to delete
+     * @param {String} siteId - id of site to delete
      * @param {Function} cb
     */
      deleteClinicSite: function(clinicId, siteId, cb){
