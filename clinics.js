@@ -729,6 +729,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/sites/${siteId}`,
+        { 204: null },
         cb
       );
     },
@@ -779,6 +780,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
+        { 204: null },
         cb
       );
     },
