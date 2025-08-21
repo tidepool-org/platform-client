@@ -1180,5 +1180,9 @@ module.exports = function (config, deps) {
     setClinicPatientLastReviewed: clinics.setClinicPatientLastReviewed,
     revertClinicPatientLastReviewed: clinics.revertClinicPatientLastReviewed,
     getLatestConsentByType: consent.getLatestConsentByType,
+    getUserConsentRecords: consent.getUserConsentRecords,
+    createUserConsentRecord: consent.createUserConsentRecord,
+    updateUserConsentRecord: consent.updateUserConsentRecord,
+    revokeUserConsentRecord: consent.revokeUserConsentRecord,
   };
 };
