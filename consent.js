@@ -23,7 +23,7 @@ module.exports = function (common) {
     /**
      * Returns a list of all user consent records.
      * By default only the most recent consent record for a given consent type will be returned.
-     * This can be overriden by setting the `version` query parameter to `all`
+     * Note: Returning all historical versions (with `version=all`) is not currently supported by this client method.
      *
      * @param {String} userId - id of the user to fetch consents for
      * @param {String} consentType - type of the consent (e.g., 'big_data_donation_project')
@@ -48,10 +48,10 @@ module.exports = function (common) {
      * @param {String} consentRecord.ownerName - The name of the account owner
      * @param {String} [consentRecord.parentGuardianName] - The name of the parent or legal guardian granting the consent record. Required if ageGroup is '<13' or '13-17'.
      * @param {String} consentRecord.grantorType - Allowed values: ['owner', 'parent/guardian']
-     * @param {String} type - type of the consentRecord (e.g., 'big_data_donation_project')
+     * @param {String} consentRecord.type - type of the consentRecord (e.g., 'big_data_donation_project')
      * @param {Object} [consentRecord.metadata]
-     * @param {Array[String]} [consentRecord.metadata.supportedOrganizations] - Allowed values: ['ADCES Foundation', 'Beyond Type 1', 'Children With Diabetes', 'The Diabetes Link', 'Diabetes Youth Families (DYF)', 'DiabetesSisters', 'The diaTribe Foundation', 'Breakthrough T1D']
-     * @param {Number} version - >=1
+     * @param {String[]} [consentRecord.metadata.supportedOrganizations] - Allowed values: ['ADCES Foundation', 'Beyond Type 1', 'Children With Diabetes', 'The Diabetes Link', 'Diabetes Youth Families (DYF)', 'DiabetesSisters', 'The diaTribe Foundation', 'Breakthrough T1D']
+     * @param {Number} consentRecord.version - >=1
      * @param cb
      * @returns {cb} cb(err, response)
      */
@@ -98,7 +98,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(arguments, 3);
       common.doDeleteWithToken(
         `/v1/users/${userId}/consents/${recordId}`,
-        { 204: function(res){ return res.body; } },
+        { 204: function(){ return null; } },
         cb
       );
     },
