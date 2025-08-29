@@ -4,7 +4,7 @@
     "node": ">=18"
   },
   "packageManager": "yarn@3.6.4",
-  "version": "0.63.1",
+  "version": "0.63.2-web-3771-informed-consent-cherry-pick-to-master.1",
   "description": "Client-side library to interact with the Tidepool platform",
   "main": "tidepool.js",
   "repository": "https://github.com/tidepool-org/platform-client.git",
