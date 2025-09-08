@@ -684,6 +684,57 @@ module.exports = function (common) {
     },
 
     /**
+     * createClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {Object} site - the site to create
+     * @param {String} site.name - the site name
+     * @param {Function} cb
+    */
+     createClinicSite: function(clinicId, site, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/sites`,
+        site,
+        cb
+      );
+    },
+
+    /**
+     * updateClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of site to update
+     * @param {Object} site - the updated site
+     * @param {String} site.name - the updated site name
+     * @param {Function} cb
+    */
+     updateClinicSite: function(clinicId, siteId, site, cb){
+      common.assertArgumentsSize(4);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        site,
+        cb
+      );
+    },
+
+    /**
+     * deleteClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of site to delete
+     * @param {Function} cb
+    */
+     deleteClinicSite: function(clinicId, siteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        { 204: null },
+        cb
+      );
+    },
+
+    /**
      * createClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
@@ -729,6 +780,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
+        { 204: null },
         cb
       );
     },
