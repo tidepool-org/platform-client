@@ -1187,5 +1187,6 @@ module.exports = function (config, deps) {
     createUserConsentRecord: consent.createUserConsentRecord,
     updateUserConsentRecord: consent.updateUserConsentRecord,
     revokeUserConsentRecord: consent.revokeUserConsentRecord,
+    getPatients: clinics.getPatients,
   };
 };
