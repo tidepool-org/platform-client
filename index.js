@@ -1188,5 +1188,6 @@ module.exports = function (config, deps) {
     updateUserConsentRecord: consent.updateUserConsentRecord,
     revokeUserConsentRecord: consent.revokeUserConsentRecord,
     getPatients: clinics.getPatients,
+    deletePatientOAuthProviderAuthorization: clinics.deletePatientOAuthProviderAuthorization,
   };
 };

@@ -936,5 +936,22 @@ module.exports = function (common) {
         cb
       )
     },
+
+    /**
+     * Delete the OAuth provider authorization for a patient
+     *
+     * @param {String} userId - Id of the patient user
+     * @param {String} providerName - Name of the OAuth provider
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    deletePatientOAuthProviderAuthorization: function(userId, providerName, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/users/${userId}/oauth/${providerName}/authorize`,
+        { 200: function(res){ return res.body; } },
+        cb
+      );
+    },
   };
 };
