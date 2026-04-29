@@ -1191,5 +1191,6 @@ module.exports = function (config, deps) {
      * Session
      */
     getSessionTrace: common.getSessionTrace,
+    getPatients: clinics.getPatients,
   };
 };
