@@ -408,7 +408,7 @@ __metadata:
     async: 0.9.0
     lodash: 4.18.1
     superagent: 5.2.2
-    uuid: 3.1.0
+    uuid: 14.0.0
   languageName: unknown
   linkType: soft
 
@@ -419,11 +419,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:3.1.0":
-  version: 3.1.0
-  resolution: "uuid@npm:3.1.0"
+"uuid@npm:14.0.0":
+  version: 14.0.0
+  resolution: "uuid@npm:14.0.0"
   bin:
-    uuid: ./bin/uuid
-  checksum: 775f96998c99018e6c4735e201a1705a2ea1b24f2ea4b431b7804cb4b32ee26c0e25bff2c3238e805c97ab121661e11817ec82f30f9f9976503bbfafbed72035
+    uuid: dist-node/bin/uuid
+  checksum: 08608584a79e987cdae000fa8eb724fa51dd8aafc136cd9fa9a8c87d07b246c56eec5fd9027fdb3e49a863eedf758bc19e325909ce281955c7a027fed67dc89e
   languageName: node
   linkType: hard
