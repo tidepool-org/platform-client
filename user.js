@@ -324,6 +324,10 @@ module.exports = function (common, config, deps) {
           err.body = (err.response && err.response.body) || '';
           return cb(err);
         }
+        if (res.error) {
+          return cb(res.error)
+        }
+
         var theUserId = res.body.userid;
         var theToken = res.headers[common.SESSION_TOKEN_HEADER];
 
