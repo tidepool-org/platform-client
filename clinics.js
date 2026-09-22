@@ -684,6 +684,57 @@ module.exports = function (common) {
     },
 
     /**
+     * createClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {Object} site - the site to create
+     * @param {String} site.name - the site name
+     * @param {Function} cb
+    */
+     createClinicSite: function(clinicId, site, cb){
+      common.assertArgumentsSize(3);
+      common.doPostWithToken(
+        `/v1/clinics/${clinicId}/sites`,
+        site,
+        cb
+      );
+    },
+
+    /**
+     * updateClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of site to update
+     * @param {Object} site - the updated site
+     * @param {String} site.name - the updated site name
+     * @param {Function} cb
+    */
+     updateClinicSite: function(clinicId, siteId, site, cb){
+      common.assertArgumentsSize(4);
+      common.doPutWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        site,
+        cb
+      );
+    },
+
+    /**
+     * deleteClinicSite
+     *
+     * @param {String} clinicId - clinic Id
+     * @param {String} siteId - id of site to delete
+     * @param {Function} cb
+    */
+     deleteClinicSite: function(clinicId, siteId, cb){
+      common.assertArgumentsSize(3);
+      common.doDeleteWithToken(
+        `/v1/clinics/${clinicId}/sites/${siteId}`,
+        { 204: null },
+        cb
+      );
+    },
+
+    /**
      * createClinicPatientTag
      *
      * @param {String} clinicId - clinic Id
@@ -729,6 +780,7 @@ module.exports = function (common) {
       common.assertArgumentsSize(3);
       common.doDeleteWithToken(
         `/v1/clinics/${clinicId}/patient_tags/${patientTagId}`,
+        { 204: null },
         cb
       );
     },
@@ -853,6 +905,36 @@ module.exports = function (common) {
         { 200: function(res){ return res.body; }, 404: {} },
         cb
       );
+    },
+
+    /**
+     * Get list of patients
+     *
+     * @param {Object} [options] - search options
+     * @param {String} [options.search] - search query string
+     * @param {String} [options.mrn] - Medical Record Number
+     * @param {String} [options.birthDate] - Patient birth date
+     * @param {String} [options.workspaceId] - Workspace identifier
+     * @param {String} [options.workspaceIdType] - Type of workspace ID (clinicId or ehrSourceId)
+     * @param {Number} [options.offset] - search page offset
+     * @param {Number} [options.limit] - results per page
+     * @param {Function} cb
+     * @returns {cb} cb(err, response)
+    */
+    getPatients: function(options = {}, cb){
+      var url = '/v1/patients';
+      if(_.isFunction(options) && _.isUndefined(cb)){
+        cb = options;
+        options = {};
+      }
+      if(!_.isEmpty(options)){
+        url += '?' + common.serialize(options);
+      }
+      common.doGetWithToken(
+        url,
+        { 200: function(res){ return res.body; }, 404: [] },
+        cb
+      )
     },
   };
 };
