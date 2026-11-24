@@ -2,9 +2,6 @@ os: linux
 dist: jammy
 language: node_js
 
-node_js:
-  - "24.15.0"
-
 cache:
   yarn: true
   directories:
